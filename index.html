@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link
       rel="stylesheet"
       as="style"
@@ -10,6 +11,18 @@
     <title>KimChaeYeon</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      .copy-tooltip {
+        @apply absolute text-xs bg-gray-800 text-white rounded px-2 py-1 opacity-0 transition-opacity duration-200 pointer-events-none;
+        top: -1.8rem;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+      .copy-wrapper:hover .copy-tooltip {
+        opacity: 1;
+      }
+    </style>
   </head>
   <body>
     <div class="min-h-screen bg-slate-50" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
@@ -25,34 +38,43 @@
             <h2 class="text-lg font-bold tracking-[-0.015em]">Kim ChaeYeon</h2>
           </div>
           <div class="flex items-center gap-9 text-sm font-medium text-[#0d141c]">
-            <a href="#">coraline0120@gmail.com</a>
-            <a href="#">82+ 010-0000-0000</a>
+            <!-- 이메일 복사 -->
+            <div class="relative cursor-pointer copy-wrapper" onclick="copyText(this, 'coraline0120@gmail.com')">
+              <span class="copy-tooltip">클릭해서 복사</span>
+              coraline0120@gmail.com
+            </div>
+            <!-- 전화번호 복사 -->
+            <div class="relative cursor-pointer copy-wrapper" onclick="copyText(this, '82+ 010-0000-0000')">
+              <span class="copy-tooltip">클릭해서 복사</span>
+              82+ 010-0000-0000
+            </div>
           </div>
         </header>
 
         <!-- Content -->
         <main class="flex justify-center px-5 md:px-40 py-5">
           <div class="w-full max-w-[960px] flex flex-col gap-6">
-            <!-- 이미지 반복 요소 시작 -->
+            <!-- 이미지 반복 요소 -->
             <div class="w-full overflow-hidden rounded-md">
               <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true" alt="1" class="w-full h-auto object-contain" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/2.jpg?raw=true" alt="2" class="w-full h-auto object-contain" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/3.jpg?raw=true" alt="3" class="w-full h-auto object-contain" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/4.jpg?raw=true" alt="4" class="w-full h-auto object-contain" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/5.jpg?raw=true" alt="5" class="w-full h-auto object-contain" />
-            </div>
-            <!-- 필요한 만큼 위와 같은 블록 복사해서 이미지 추가
+            <!-- 추가 이미지 생략 -->
           </div>
         </main>
       </div>
     </div>
+
+    <!-- 복사 기능 스크립트 -->
+    <script>
+      function copyText(element, text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const tooltip = element.querySelector(".copy-tooltip");
+          tooltip.textContent = "복사됨!";
+          setTimeout(() => {
+            tooltip.textContent = "클릭해서 복사";
+          }, 2000);
+        });
+      }
+    </script>
   </body>
 </html>
