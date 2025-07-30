@@ -26,31 +26,40 @@
       .copy-wrapper:hover .copy-tooltip {
         opacity: 1;
       }
+      .artstation-text {
+        color: #13aff0;
+      }
     </style>
   </head>
 
-  <body class="min-h-screen bg-slate-50" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
+  <body class="min-h-screen bg-slate-50 relative" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
     <div class="flex flex-col h-full">
       <!-- Header -->
       <header class="flex items-center justify-between border-b border-[#e7edf4] px-10 py-3 bg-white">
-        <div class="flex items-center gap-4 text-[#0d141c]">
-          <div class="w-4 h-4">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
-            </svg>
-          </div>
+        <div class="flex items-center gap-2 text-[#0d141c]">
+          <!-- 물고기 SVG 아이콘 (크기 키움) -->
+          <svg class="w-6 h-6" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+            <ellipse cx="35" cy="32" rx="20" ry="12" />
+            <polygon points="15,32 5,24 5,40" />
+            <circle cx="45" cy="28" r="2.5" fill="white"/>
+          </svg>
           <h2 class="text-lg font-bold tracking-[-0.015em]">Kim ChaeYeon</h2>
         </div>
+
         <div class="flex items-center gap-9 text-sm font-medium text-[#0d141c]">
-          <!-- Email Copy -->
-          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')">
-            <span class="copy-tooltip">📋</span>
-            coraline0120@gmail.com
-          </div>
-          <!-- Phone Copy -->
+          <!-- ArtStation Link (텍스트 버전) -->
+          <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="artstation-text hover:underline">Artstation</a>
+
+          <!-- 전화번호 복사 -->
           <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, '82+ 010-0000-0000')">
             <span class="copy-tooltip">📋</span>
             82+ 010-0000-0000
+          </div>
+
+          <!-- 이메일 복사 -->
+          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')">
+            <span class="copy-tooltip">📋</span>
+            coraline0120@gmail.com
           </div>
         </div>
       </header>
@@ -58,7 +67,6 @@
       <!-- Content -->
       <main class="flex justify-center px-5 md:px-40 py-5">
         <div class="w-full max-w-[960px] flex flex-col gap-6">
-          <!-- Images -->
           <div class="w-full overflow-hidden rounded-md">
             <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true" alt="1" class="w-full h-auto object-contain" />
           </div>
@@ -78,7 +86,12 @@
       </main>
     </div>
 
-    <!-- JS for copy -->
+    <!-- 최상단 이동 버튼 -->
+    <button onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition">
+      ↑
+    </button>
+
+    <!-- 복사 기능 JS -->
     <script>
       function copyText(element, text) {
         navigator.clipboard.writeText(text).then(() => {
@@ -88,6 +101,10 @@
             tooltip.textContent = "📋";
           }, 2000);
         });
+      }
+
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     </script>
   </body>
