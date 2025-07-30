@@ -5,115 +5,53 @@
       rel="stylesheet"
       as="style"
       onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Work+Sans%3Awght%40400%3B500%3B700%3B900"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Work+Sans:wght@400;500;700;900"
     />
-
     <title>KimChaeYeon</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
-
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
   <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+    <div class="min-h-screen bg-slate-50" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
+      <div class="flex flex-col h-full">
+        <!-- Header -->
+        <header class="flex items-center justify-between border-b border-[#e7edf4] px-10 py-3 bg-white">
           <div class="flex items-center gap-4 text-[#0d141c]">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path></svg>
+            <div class="w-4 h-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+              </svg>
             </div>
-            <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]">Kim ChaeYeon</h2>
+            <h2 class="text-lg font-bold tracking-[-0.015em]">Kim ChaeYeon</h2>
           </div>
-          <div class="flex flex-1 justify-end gap-8">
-            <div class="flex items-center gap-9">
-              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">coraline0120@gmail.com</a>
-              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">000-0000-0000</a>
-            </div>
+          <div class="flex items-center gap-9 text-sm font-medium text-[#0d141c]">
+            <a href="#">coraline0120@gmail.com</a>
+            <a href="#">82+ 010-0000-0000</a>
           </div>
         </header>
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true");'
-                ></div>
-              </div>
+
+        <!-- Content -->
+        <main class="flex justify-center px-5 md:px-40 py-5">
+          <div class="w-full max-w-[960px] flex flex-col gap-6">
+            <!-- 이미지 반복 요소 시작 -->
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true" alt="1" class="w-full h-auto object-contain" />
             </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://github.com/4YooSB/4YooSB.github.io/blob/main/2.jpg?raw=true");'
-                ></div>
-              </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/2.jpg?raw=true" alt="2" class="w-full h-auto object-contain" />
             </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://github.com/4YooSB/4YooSB.github.io/blob/main/3.jpg?raw=true");'
-                ></div>
-              </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/3.jpg?raw=true" alt="3" class="w-full h-auto object-contain" />
             </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBncQl6kikUFjY4uF11_c88uGQn0khWNFd7k4ASzW18RN-TYvHx4Nt4bGmo-VZ4UkNLPgq78yAFtdAku8dr2QWXB6MYyI5DTO26c4UVtSuV39zvQ6cAIzFrGoUnqfNEgJ0V2zSoTze7b0iSXo08J0PQlZq0DsNosjlME-EmUnZCgTfuzjITzm-1dDUQhb1gCPxM-eC-nDeUYgtF2dQJKwXmKwY1C3R4YoFiemzUvIlv-qgmbrNuUcGn8uLv_8c9z-DFoYC-k_ouu90Q");'
-                ></div>
-              </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/4.jpg?raw=true" alt="4" class="w-full h-auto object-contain" />
             </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJEFytASycs_aVWBTAeRlpSL2JiqKRQ6C-nT-LQqn2kMe4txEYtC6d7C66EL-mmEWKVi_-g-hjEANxNXwdn9eCGBwcjS90zubjt369XBHI_9Axlup27uwAoT-zmUMXOK-G9FHpFirIeXi4GwddNSPxgkgIaIJ3fWfCC1iMFH1u7Mke1BtoWaFxRDnOth9s1a2T5G-XpeX-vGZRm60Mu8cPnf_3p-bASDBYt5iEeFknZFhBJcjmLHQZGZnVj0Cvvur0DLsgDhX8n2Vx");'
-                ></div>
-              </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/5.jpg?raw=true" alt="5" class="w-full h-auto object-contain" />
             </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeSDnPKwai3zi3DvnEuKwuBfcaSuhSODfk_5uV5B_9vSoG02wRwkRGwG35tStA9uo110LzBFKuGZtUex2H5tnC_I47-PIFNJTbB_GeRz-wTQz-qpxbnZUYLBFqffNIGVX5cLs1bzm2AIZrPNp8REMdQFqdG9IF2BTFuqPuvZckupYe0T8RYTX7EOthrUqSXjrLZdrYDXJPUbd695Rqt1hGxN2fP5JOH19fgeZlfdVu0jMdZo04PEVSuB9vedSJnxVNESraWof0m4-8");'
-                ></div>
-              </div>
-            </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDBcBqNt8OnNTXfM7UX8NGd8I28_znTTYX6v0mJI2odZsbbIQleXui9njgJm7ycMu_M5HFr9WJQwHmDEOqlL0xHiwVn-NL2h9KUqQYFqg9KxgTFtNbVEIf_ARbR-1CLf9r92-fC-muksdLECdJ6pxC5LvS0lvQiyuisx_jKT8hU_RmG7Bk15AKxGhTMho-p95LMaojsI89ijl6otfoXH_0OIP0TtyqOQlNJ6yM3YWq2HVJQJE2IioBhzFY_H1UImI_OAVDA9uxZKk_o");'
-                ></div>
-              </div>
-            </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJZlk82U9kOIbML9khj9TRlfzypehX_-AnN9OTwjCsf4GQd6yX_b7Xmgxg_XgwSoSxJKAdpniQk0_3KJuE31d4ahfJCaH-TAQQ20XYDz0Nx8WGY7UxD06ovp-byFhig5JOGy38o9ATD4iQur3Nvuq5mJRcAzCgao3X5V5sHdh9_dqCX3annko7xxEdSFP9SheZ0h9LOAxVhI_AfwgYOJ3iWuWQS2x-laaR4k1xdPIQ6zsKj5l9FpGNeDDYIpTGaydrMNAsQvugKmKe");'
-                ></div>
-              </div>
-            </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDa-3J-y6FP5ZvbwcyCqhmgxtR90abZ9L3JVmJuQbqVkZEmoF3QX01eu3xbHZs3fFWMKUVUBiAK9vD04NZdnNV2oCqiMa55obfEC-4bfEvWi7xhLGTezviilmGXDoXOpidPHp4B-oXr--HtnQypYLZOMD-ZA6Xxn-ZiTLV9op20cZ2U0eLVk9_TVgOE2MjhGqglTx2oS07jAlcz2XTT98suWL7OIzKXEf_ylxSlm2WSo8fGA2nzBFdBFNiVM5DvhVnJKYRqAsr-pXFU");'
-                ></div>
-              </div>
-            </div>
-            <div class="flex w-full grow bg-slate-50 @container py-3">
-              <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[2/3] flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCKt-TdFY8V9WawLWRuSJV23ZhBfbPzOSIrEhw788iFqvPL829qugEsJj-zrQjMOdRlyzPfU4rKPGIUfVe0iA-nO3B0ie-3zYPfwbGKEalfudtpPz9g3_u445pHiIOlXS2yqxNAYUD32TXuAWm5LpSjECbCTJPRa8HXAZbghofAUDuF1oKEcJoS9_EZzIiJLnPTCJ7_3D-nE8uWM0QXNw-EecebcHcP8i43bhcAZnuUUFFPwl4scTApPut2YNzMIQXMU6cAx97Ck-ip");'
-                ></div>
-              </div>
-            </div>
+            <!-- 필요한 만큼 위와 같은 블록 복사해서 이미지 추가
           </div>
-        </div>
+        </main>
       </div>
     </div>
   </body>
