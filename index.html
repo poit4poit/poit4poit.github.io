@@ -1,145 +1,131 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <title>KimChaeYeon</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>KimChaeYeon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Tailwind CSS + Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Work+Sans:wght@400;500;700;900"
-    />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Work+Sans:wght@400;500;700;900"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-    <style>
-      .copy-tooltip {
-        @apply absolute text-lg transition-opacity duration-200 pointer-events-none;
-        top: -1.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 0;
-      }
-      .copy-wrapper:hover .copy-tooltip {
-        opacity: 1;
-      }
-      .artstation-text {
-        color: #13aff0;
-      }
-    </style>
-  </head>
+    <style>
+      .copy-tooltip {
+        @apply absolute text-lg transition-opacity duration-200 pointer-events-none;
+        top: -1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+      }
+      .copy-wrapper:hover .copy-tooltip {
+        opacity: 1;
+      }
+      .artstation-text {
+        color: #13aff0;
+      }
+    </style>
+  </head>
 
-  <body class="min-h-screen bg-slate-50 relative" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
-    <div class="flex flex-col h-full">
-      <!-- Header -->
-      <header class="flex flex-wrap items-center justify-between border-b border-[#e7edf4] px-5 md:px-10 py-3 bg-white sticky top-0 z-50">
-        <div class="flex items-center gap-2 text-[#0d141c]">
-          <!-- SVG: Starfish -->
-          <svg class="w-10 h-10" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#0d141c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 30 C16 18, 28 12, 32 20 C36 12, 48 18, 52 30 C60 32, 60 42, 50 46 C54 58, 42 60, 36 52 C32 60, 22 58, 24 46 C14 42, 4 38, 12 30 Z" fill="none" stroke="#0d141c" stroke-width="4" />
-          </svg>
-          <h2 class="text-lg font-bold tracking-[-0.015em]">Kim ChaeYeon</h2>
-        </div>
+  <body class="min-h-screen bg-slate-50 relative" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
+    <div class="flex flex-col h-full">
+            <header class="flex flex-wrap items-center justify-between border-b border-[#e7edf4] px-5 md:px-10 py-3 bg-white sticky top-0 z-50">
+        <div class="flex items-center gap-2 text-[#0d141c]">
+                    <svg class="w-10 h-10" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#0d141c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 30 C16 18, 28 12, 32 20 C36 12, 48 18, 52 30 C60 32, 60 42, 50 46 C54 58, 42 60, 36 52 C32 60, 22 58, 24 46 C14 42, 4 38, 12 30 Z" fill="none" stroke="#0d141c" stroke-width="4" />
+          </svg>
+          <h2 class="text-lg font-bold tracking-[-0.015em]">Kim ChaeYeon</h2>
+        </div>
 
-        <div class="flex flex-wrap items-center gap-4 md:gap-9 text-sm font-medium text-[#0d141c] mt-2 md:mt-0">
-          <!-- ArtStation Link -->
-          <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="artstation-text hover:underline">Artstation</a>
+        <div class="flex flex-wrap items-center gap-4 md:gap-9 text-sm font-medium text-[#0d141c] mt-2 md:mt-0">
+                    <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="artstation-text hover:underline">Artstation</a>
 
-          <!-- 전화번호 복사 -->
-          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, '82+ 010-0000-0000')">
-            <span class="copy-tooltip">📋</span>
-            82+ 010-3017-0393
-          </div>
+                    <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, '82+ 010-0000-0000')">
+            <span class="copy-tooltip">📋</span>
+            82+ 010-3017-0393
+          </div>
 
-          <!-- 이메일 복사 -->
-          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')">
-            <span class="copy-tooltip">📋</span>
-            coraline0120@gmail.com
-          </div>
-        </div>
-      </header>
+                    <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')">
+            <span class="copy-tooltip">📋</span>
+            coraline0120@gmail.com
+          </div>
+        </div>
+      </header>
 
-      <!-- 캐릭터 썸네일 네비게이션 -->
-      <nav class="flex justify-center gap-6 py-4 bg-slate-100 sticky top-[64px] z-40">
-        <!-- MIYU -->
-        <a href="#miyu" class="block w-28 h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition">
-          <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" alt="MIYU" class="w-full h-full object-cover" />
-        </a>
-        <!-- SB -->
-        <a href="#sb" class="block w-28 h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition">
-          <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true" alt="SB" class="w-full h-full object-cover" />
-        </a>
-      </nav>
+            <nav class="flex justify-start px-5 md:px-10 py-4 bg-slate-100 sticky top-[64px] z-40">
+                <a href="#miyu" class="block w-28 h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition">
+          <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" alt="MIYU" class="w-full h-full object-cover" />
+        </a>
+                <a href="#sb" class="block w-28 h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition">
+          <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true" alt="SB" class="w-full h-full object-cover" />
+        </a>
+      </nav>
 
-      <!-- Content -->
-      <main class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 py-0">
-        <div class="w-full max-w-[960px] flex flex-col gap-0">
+            <main class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 py-0">
+        <div class="w-full max-w-[960px] flex flex-col gap-0">
 
-          <!-- MIYU 구간 -->
-          <section id="miyu" class="flex flex-col gap-0">
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-          </section>
+                    <section id="miyu" class="flex flex-col gap-0">
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+          </section>
 
-          <!-- SB 구간 -->
-          <section id="sb" class="flex flex-col gap-0 mt-10">
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/2.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/3.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/4.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/5.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
-            </div>
-          </section>
+                    <section id="sb" class="flex flex-col gap-0 mt-10">
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/1.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/2.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/3.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/4.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md">
+              <img src="https://github.com/4YooSB/4YooSB.github.io/blob/main/5.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            </div>
+          </section>
 
-        </div>
-      </main>
-    </div>
+        </div>
+      </main>
+    </div>
 
-    <!-- 최상단 이동 버튼 -->
-    <button onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition">
-      ↑
-    </button>
+        <button onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition">
+      ↑
+    </button>
 
-    <!-- 복사 기능 JS -->
-    <script>
-      function copyText(element, text) {
-        navigator.clipboard.writeText(text).then(() => {
-          const tooltip = element.querySelector(".copy-tooltip");
-          tooltip.textContent = "✅";
-          setTimeout(() => {
-            tooltip.textContent = "📋";
-          }, 2000);
-        });
-      }
+        <script>
+      function copyText(element, text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const tooltip = element.querySelector(".copy-tooltip");
+          tooltip.textContent = "✅";
+          setTimeout(() => {
+            tooltip.textContent = "📋";
+          }, 2000);
+        });
+      }
 
-      function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    </script>
-  </body>
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    </script>
+  </body>
 </html>
