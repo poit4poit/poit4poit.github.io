@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Put your HTML text here<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -15,126 +15,280 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <style>
+      /* ---------- Minor utility styles ---------- */
       .copy-tooltip {
-        @apply absolute text-lg transition-opacity duration-200 pointer-events-none;
+        position: absolute;
         top: -1.5rem;
         left: 50%;
         transform: translateX(-50%);
         opacity: 0;
+        transition: opacity .2s ease;
+        pointer-events: none;
+        font-size: 1.1rem;
       }
-      .copy-wrapper:hover .copy-tooltip {
-        opacity: 1;
-      }
-      .artstation-text {
-        color: #13aff0;
+      .copy-wrapper:hover .copy-tooltip { opacity: 1; }
+      .artstation-text { color: #13aff0; }
+
+      /* ---------- Reveal on scroll ---------- */
+      .reveal { opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal.show { opacity: 1; transform: translateY(0); }
+
+      /* ---------- Progressive image fade-in ---------- */
+      .fade-img { opacity: 0; transition: opacity .5s ease; }
+      .fade-img.loaded { opacity: 1; }
+
+      /* ---------- Nav thumbnail focus/active ring ---------- */
+      .thumb-active { outline: 3px solid #0d141c; outline-offset: 2px; }
+
+      /* ---------- Top scroll progress bar ---------- */
+      .progress { position: fixed; top: 56px; left: 0; height: 3px; background: #0d141c; width: 0; z-index: 60; }
+
+      /* ---------- Lightbox ---------- */
+      .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; align-items: center; justify-content: center; z-index: 100; }
+      .lightbox.open { display: flex; }
+      .lightbox img { max-width: 92vw; max-height: 92vh; box-shadow: 0 10px 30px rgba(0,0,0,.5); border-radius: .5rem; }
+      .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); font-size: 28px; padding: .6rem .8rem; background: rgba(255,255,255,.12); color: #fff; border-radius: .5rem; cursor: pointer; user-select: none; }
+      .lb-prev { left: 2vw; }
+      .lb-next { right: 2vw; }
+      .lb-close { position: absolute; top: 2vh; right: 2vw; font-size: 28px; padding: .4rem .6rem; background: rgba(255,255,255,.12); border-radius: .5rem; }
+
+      /* ---------- Prefers-reduced-motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .reveal { transition: none; }
+        .fade-img { transition: none; }
       }
     </style>
   </head>
 
   <body class="min-h-screen bg-slate-50 relative" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
     <div class="flex flex-col h-full">
-      <header class="flex flex-wrap items-center justify-between border-b border-[#e7edf4] px-5 md:px-10 py-3 bg-white fixed top-0 left-0 right-0 z-50">
-        <div class="flex items-center gap-2 text-[#0d141c]">
-          
+      <header id="siteHeader" class="flex flex-wrap items-center justify-between border-b border-[#e7edf4] px-5 md:px-10 py-3 bg-white fixed top-0 left-0 right-0 z-50">
+        <div class="flex items-center gap-2 text-[#0d141c] select-none">
           <h2 class="text-lg font-bold tracking-[-0.015em]">Kim ChaeYeon</h2>
         </div>
 
         <div class="flex flex-wrap items-center gap-4 md:gap-9 text-sm font-medium text-[#0d141c] mt-2 md:mt-0">
           <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="artstation-text hover:underline">Artstation</a>
 
-          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, '82+ 010-0000-0000')">
-            <span class="copy-tooltip">📋</span>
-            82+ 010-3017-0393
-          </div>
-
-          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')">
-            <span class="copy-tooltip">📋</span>
+          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')" aria-label="이메일 복사">
+            <span class="copy-tooltip" aria-hidden="true">📋</span>
             coraline0120@gmail.com
           </div>
         </div>
       </header>
-      
+
+      <div class="progress" id="scrollProgress" aria-hidden="true"></div>
+
       <!-- 캐릭터 썸네일 네비게이션 -->
-      <nav class="flex flex-col items-start gap-2 py-4 px-20 fixed top-[64px] left-0 z-40">
+      <nav class="flex flex-col items-start gap-2 py-4 px-3 sm:px-6 md:px-8 lg:px-10 fixed top-[64px] left-0 z-40">
+        <!-- Mobile rail backdrop for readability -->
+        <div class="hidden md:block absolute inset-0 -z-10 bg-white/70 backdrop-blur rounded-r-xl"></div>
         <!-- MIYU -->
-        <a href="#miyu" class="block w-28 h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition">
-          <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" alt="MIYU" class="w-full h-full object-cover" />
+        <a href="#miyu" class="block w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition" data-thumb>
+          <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" alt="MIYU" class="w-full h-full object-cover" />
         </a>
         <!-- Wriothesley -->
-        <a href="#Wriothesley" class="block w-28 h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition">
-          <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" alt="Wriothesley" class="w-full h-full object-cover" />
+        <a href="#Wriothesley" class="block w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition" data-thumb>
+          <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" alt="Wriothesley" class="w-full h-full object-cover" />
         </a>
       </nav>
 
-
-      
-      
-        <main class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 py-15">
-    <div class="w-full max-w-[960px] flex flex-col gap-0">
-        <section id="miyu" class="flex flex-col gap-0 py-20 scroll-mt-10">
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+      <main class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 pt-24">
+        <div class="w-full max-w-[960px] flex flex-col gap-0">
+          <!-- Section: MIYU -->
+          <section id="miyu" class="flex flex-col gap-0 py-0- scroll-mt-20">
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 1" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 2" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/Miyu3-2.png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/Miyu3-2.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 3" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 4" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 5" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 6" />
             </div>
           </section>
 
-          <section id="Wriothesley" class="flex flex-col gap-0 py-20 scroll-mt-0">
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+          <!-- Section: Wriothesley -->
+          <section id="Wriothesley" class="flex flex-col gap-0 py-20 scroll-mt-20">
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 0" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/1.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/1.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 1" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/2.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/2.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 2" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/3.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/3.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 3" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/4.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/4.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 4" />
             </div>
-            <div class="w-full overflow-hidden rounded-md">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="w-full h-auto object-contain max-h-[100vh]" />
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 5" />
             </div>
           </section>
-    </div>
-</main>
+        </div>
+      </main>
+
+      <button id="toTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition opacity-0 pointer-events-none" aria-label="맨 위로">
+        ↑
+      </button>
+
+      <!-- Lightbox modal -->
+      <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+        <button class="lb-close" id="lbClose" aria-label="닫기">✕</button>
+        <button class="lb-btn lb-prev" id="lbPrev" aria-label="이전">‹</button>
+        <img id="lbImg" alt="확대 이미지" />
+        <button class="lb-btn lb-next" id="lbNext" aria-label="다음">›</button>
       </div>
-    </div>
 
-    <button onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition">
-      ↑
-    </button>
+    </div>
 
     <script>
+      /* ===== Copy helpers ===== */
       function copyText(element, text) {
         navigator.clipboard.writeText(text).then(() => {
-          const tooltip = element.querySelector(".copy-tooltip");
-          tooltip.textContent = "✅";
-          setTimeout(() => {
-            tooltip.textContent = "📋";
-          }, 2000);
+          const tooltip = element.querySelector('.copy-tooltip');
+          tooltip.textContent = '✅';
+          setTimeout(() => { tooltip.textContent = '📋'; }, 1600);
         });
       }
 
       function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+
+      /* ===== Smooth anchor scroll with header offset ===== */
+      const header = document.getElementById('siteHeader');
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          const targetId = a.getAttribute('href').slice(1);
+          const target = document.getElementById(targetId);
+          if (!target) return;
+          e.preventDefault();
+          const y = target.getBoundingClientRect().top + window.pageYOffset - (header.offsetHeight + 12);
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          history.replaceState(null, '', '#' + targetId);
+        });
+      });
+
+      /* ===== Reveal on scroll ===== */
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('show');
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      /* ===== Progressive image fade-in ===== */
+      document.querySelectorAll('img.fade-img').forEach(img => {
+        if (img.complete) img.classList.add('loaded');
+        img.addEventListener('load', () => img.classList.add('loaded'));
+      });
+
+      /* ===== Scroll progress bar & back-to-top visibility ===== */
+      const progress = document.getElementById('scrollProgress');
+      const toTop = document.getElementById('toTopBtn');
+      function onScroll() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const pct = Math.max(0, Math.min(1, scrollTop / docHeight));
+        progress.style.width = (pct * 100) + '%';
+        // Show back-to-top after 300px
+        if (scrollTop > 300) { toTop.classList.remove('opacity-0', 'pointer-events-none'); }
+        else { toTop.classList.add('opacity-0', 'pointer-events-none'); }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      /* ===== Scrollspy for thumb nav ===== */
+      const sections = Array.from(document.querySelectorAll('section[id]'));
+      const thumbs = Array.from(document.querySelectorAll('[data-thumb]'));
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = sections.indexOf(entry.target);
+            thumbs.forEach((t, i) => t.classList.toggle('thumb-active', i === idx));
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+      sections.forEach(s => spy.observe(s));
+
+      /* ===== Keyboard shortcuts: j/k move between sections; Esc closes lightbox ===== */
+      document.addEventListener('keydown', (e) => {
+        const tag = (e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea') return;
+        const idx = sections.findIndex(s => {
+          const rect = s.getBoundingClientRect();
+          return rect.top <= (header.offsetHeight + 20) && rect.bottom > (header.offsetHeight + 20);
+        });
+        if (e.key.toLowerCase() === 'j') {
+          const next = sections[Math.min(sections.length - 1, (idx < 0 ? 0 : idx + 1))];
+          if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        if (e.key.toLowerCase() === 'k') {
+          const prev = sections[Math.max(0, (idx <= 0 ? 0 : idx - 1))];
+          if (prev) prev.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+      });
+
+      /* ===== Lightbox ===== */
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      const lbPrev = document.getElementById('lbPrev');
+      const lbNext = document.getElementById('lbNext');
+      const lbClose = document.getElementById('lbClose');
+      const lbTargets = Array.from(document.querySelectorAll('.lb-target'));
+      let lbIndex = -1;
+
+      function openLightbox(i) {
+        lbIndex = i;
+        lbImg.src = lbTargets[i].src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        lbIndex = -1;
+      }
+      function moveLightbox(dir) {
+        if (lbIndex < 0) return;
+        lbIndex = (lbIndex + dir + lbTargets.length) % lbTargets.length;
+        lbImg.src = lbTargets[lbIndex].src;
+      }
+
+      lbTargets.forEach((img, i) => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', () => openLightbox(i));
+      });
+      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', () => moveLightbox(-1));
+      lbNext.addEventListener('click', () => moveLightbox(1));
+
+      /* ===== Hash focus on load (with offset) ===== */
+      window.addEventListener('load', () => {
+        if (location.hash) {
+          const el = document.querySelector(location.hash);
+          if (el) {
+            const y = el.getBoundingClientRect().top + window.pageYOffset - (header.offsetHeight + 12);
+            window.scrollTo({ top: y });
+          }
+        }
+      });
     </script>
   </body>
 </html>
