@@ -1,4 +1,4 @@
-Put your HTML text here<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -93,10 +93,12 @@ Put your HTML text here<!DOCTYPE html>
         </a>
       </nav>
 
-      <main class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 pt-24">
+      <!-- ★ pt-24 제거하고 동적으로 패딩을 줄 #pageMain 부여 -->
+      <main id="pageMain" class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 pt-0">
         <div class="w-full max-w-[960px] flex flex-col gap-0">
           <!-- Section: MIYU -->
-          <section id="miyu" class="flex flex-col gap-0 py-0- scroll-mt-20">
+          <!-- ★ 오타(py-0-) 제거 -->
+          <section id="miyu" class="flex flex-col gap-0 py-0">
             <div class="w-full overflow-hidden rounded-md reveal">
               <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 1" />
             </div>
@@ -156,28 +158,59 @@ Put your HTML text here<!DOCTYPE html>
     </div>
 
     <script>
+      /* ===== 공용 참조 & 간격 통일 파라미터 ===== */
+      const header = document.getElementById('siteHeader');
+      const pageMain = document.getElementById('pageMain');
+      const progress = document.getElementById('scrollProgress');
+      const toTop = document.getElementById('toTopBtn');
+      const sections = Array.from(document.querySelectorAll('section[id]'));
+      const thumbs = Array.from(document.querySelectorAll('[data-thumb]'));
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      const lbPrev = document.getElementById('lbPrev');
+      const lbNext = document.getElementById('lbNext');
+      const lbClose = document.getElementById('lbClose');
+      const lbTargets = Array.from(document.querySelectorAll('.lb-target'));
+      const GAP = 12; // 네비 스크롤과 첫 화면 간격을 동일하게 만드는 여백
+
       /* ===== Copy helpers ===== */
       function copyText(element, text) {
         navigator.clipboard.writeText(text).then(() => {
           const tooltip = element.querySelector('.copy-tooltip');
-          tooltip.textContent = '✅';
-          setTimeout(() => { tooltip.textContent = '📋'; }, 1600);
+          if (tooltip) {
+            tooltip.textContent = '✅';
+            setTimeout(() => { tooltip.textContent = '📋'; }, 1600);
+          }
         });
       }
+      window.copyText = copyText; // inline onclick 접근용
 
       function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+      window.scrollToTop = scrollToTop;
 
-      /* ===== Smooth anchor scroll with header offset ===== */
-      const header = document.getElementById('siteHeader');
+      /* ===== 헤더 오프셋을 레이아웃과 스크롤 모두에 적용 (핵심) ===== */
+      function applyHeaderOffset() {
+        const offset = header.offsetHeight + GAP;
+        // 첫 화면 레이아웃 패딩 = 네비 이동 오프셋
+        pageMain.style.paddingTop = offset + 'px';
+        // 기본 앵커 점프 및 scrollIntoView 대비
+        sections.forEach(s => { s.style.scrollMarginTop = offset + 'px'; });
+      }
+      window.addEventListener('load', applyHeaderOffset, { once: true });
+      window.addEventListener('resize', applyHeaderOffset);
+      if (document.fonts && document.fonts.ready) { document.fonts.ready.then(applyHeaderOffset); }
+
+      /* ===== Smooth anchor scroll with unified header offset ===== */
       document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', (e) => {
           const targetId = a.getAttribute('href').slice(1);
           const target = document.getElementById(targetId);
           if (!target) return;
           e.preventDefault();
-          const y = target.getBoundingClientRect().top + window.pageYOffset - (header.offsetHeight + 12);
+          const offset = header.offsetHeight + GAP;
+          const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
           window.scrollTo({ top: y, behavior: 'smooth' });
           history.replaceState(null, '', '#' + targetId);
         });
@@ -185,9 +218,7 @@ Put your HTML text here<!DOCTYPE html>
 
       /* ===== Reveal on scroll ===== */
       const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('show');
-        });
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
       }, { threshold: 0.12 });
       document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
@@ -198,14 +229,11 @@ Put your HTML text here<!DOCTYPE html>
       });
 
       /* ===== Scroll progress bar & back-to-top visibility ===== */
-      const progress = document.getElementById('scrollProgress');
-      const toTop = document.getElementById('toTopBtn');
       function onScroll() {
         const scrollTop = window.scrollY;
         const docHeight = document.body.scrollHeight - window.innerHeight;
-        const pct = Math.max(0, Math.min(1, scrollTop / docHeight));
+        const pct = Math.max(0, Math.min(1, docHeight > 0 ? scrollTop / docHeight : 0));
         progress.style.width = (pct * 100) + '%';
-        // Show back-to-top after 300px
         if (scrollTop > 300) { toTop.classList.remove('opacity-0', 'pointer-events-none'); }
         else { toTop.classList.add('opacity-0', 'pointer-events-none'); }
       }
@@ -213,8 +241,6 @@ Put your HTML text here<!DOCTYPE html>
       onScroll();
 
       /* ===== Scrollspy for thumb nav ===== */
-      const sections = Array.from(document.querySelectorAll('section[id]'));
-      const thumbs = Array.from(document.querySelectorAll('[data-thumb]'));
       const spy = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -229,9 +255,10 @@ Put your HTML text here<!DOCTYPE html>
       document.addEventListener('keydown', (e) => {
         const tag = (e.target.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea') return;
+        const offsetY = header.offsetHeight + GAP;
         const idx = sections.findIndex(s => {
           const rect = s.getBoundingClientRect();
-          return rect.top <= (header.offsetHeight + 20) && rect.bottom > (header.offsetHeight + 20);
+          return rect.top <= offsetY + 20 && rect.bottom > offsetY + 20;
         });
         if (e.key.toLowerCase() === 'j') {
           const next = sections[Math.min(sections.length - 1, (idx < 0 ? 0 : idx + 1))];
@@ -245,14 +272,7 @@ Put your HTML text here<!DOCTYPE html>
       });
 
       /* ===== Lightbox ===== */
-      const lightbox = document.getElementById('lightbox');
-      const lbImg = document.getElementById('lbImg');
-      const lbPrev = document.getElementById('lbPrev');
-      const lbNext = document.getElementById('lbNext');
-      const lbClose = document.getElementById('lbClose');
-      const lbTargets = Array.from(document.querySelectorAll('.lb-target'));
       let lbIndex = -1;
-
       function openLightbox(i) {
         lbIndex = i;
         lbImg.src = lbTargets[i].src;
@@ -279,12 +299,13 @@ Put your HTML text here<!DOCTYPE html>
       lbPrev.addEventListener('click', () => moveLightbox(-1));
       lbNext.addEventListener('click', () => moveLightbox(1));
 
-      /* ===== Hash focus on load (with offset) ===== */
+      /* ===== Hash focus on load (with same offset) ===== */
       window.addEventListener('load', () => {
         if (location.hash) {
           const el = document.querySelector(location.hash);
           if (el) {
-            const y = el.getBoundingClientRect().top + window.pageYOffset - (header.offsetHeight + 12);
+            const offset = header.offsetHeight + GAP;
+            const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
             window.scrollTo({ top: y });
           }
         }
