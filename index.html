@@ -16,11 +16,13 @@
 
     <style>
       /* ---------- Minor utility styles ---------- */
+      .copy-wrapper { position: relative; }
+      /* 이모지: 이메일 오른쪽에 표시 */
       .copy-tooltip {
         position: absolute;
-        top: -1.5rem;
-        left: 50%;
-        transform: translateX(-50%);
+        left: calc(100% + 6px);
+        top: 50%;
+        transform: translateY(-50%);
         opacity: 0;
         transition: opacity .2s ease;
         pointer-events: none;
@@ -37,9 +39,6 @@
       .fade-img { opacity: 0; transition: opacity .5s ease; }
       .fade-img.loaded { opacity: 1; }
 
-      /* ---------- Nav thumbnail focus/active ring ---------- */
-      .thumb-active { outline: 3px solid #0d141c; outline-offset: 2px; }
-
       /* ---------- Top scroll progress bar ---------- */
       .progress { position: fixed; top: 56px; left: 0; height: 3px; background: #0d141c; width: 0; z-index: 60; }
 
@@ -53,99 +52,144 @@
       .lb-close { position: absolute; top: 2vh; right: 2vw; font-size: 28px; padding: .4rem .6rem; background: rgba(255,255,255,.12); border-radius: .5rem; }
 
       /* ---------- Prefers-reduced-motion ---------- */
-      @media (prefers-reduced-motion: reduce) {
-        .reveal { transition: none; }
-        .fade-img { transition: none; }
-      }
+      @media (prefers-reduced-motion: reduce) { .reveal { transition: none; } .fade-img { transition: none; } }
     </style>
   </head>
 
   <body class="min-h-screen bg-slate-50 relative" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
     <div class="flex flex-col h-full">
+      <!-- Header -->
       <header id="siteHeader" class="flex flex-wrap items-center justify-between border-b border-[#e7edf4] px-5 md:px-10 py-3 bg-white fixed top-0 left-0 right-0 z-50">
+        <!-- Left: brand (@4Chloey) -->
         <div class="flex items-center gap-2 text-[#0d141c] select-none">
           <h2 class="text-lg font-bold tracking-[-0.015em]">@4Chloey</h2>
         </div>
-
-        <div class="flex flex-wrap items-center gap-4 md:gap-9 text-sm font-medium text-[#0d141c] mt-2 md:mt-0">
+        <!-- Right: ArtStation ▸ 이메일 -->
+        <div class="ml-auto flex flex-wrap items-center gap-4 md:gap-6 lg:gap-8 text-sm font-medium text-[#0d141c] mt-2 md:mt-0 mr-[-6px] md:mr-[-20px]">
           <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="artstation-text hover:underline">Artstation</a>
-
           <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')" aria-label="이메일 복사">
-            <span class="copy-tooltip" aria-hidden="true">📋</span>
             coraline0120@gmail.com
+            <span class="copy-tooltip" aria-hidden="true">📋</span>
           </div>
         </div>
       </header>
 
       <div class="progress" id="scrollProgress" aria-hidden="true"></div>
 
-      <!-- 캐릭터 썸네일 네비게이션 -->
-      <nav class="flex flex-col items-start gap-2 py-4 px-3 sm:px-6 md:px-8 lg:px-10 fixed top-[64px] left-0 z-40">
-        <!-- Mobile rail backdrop for readability -->
-        <div class="hidden md:block absolute inset-0 -z-10 bg-white/70 backdrop-blur rounded-r-xl"></div>
-        <!-- MIYU -->
-        <a href="#miyu" class="block w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition" data-thumb>
-          <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" alt="MIYU" class="w-full h-full object-cover" />
-        </a>
-        <!-- Wriothesley -->
-        <a href="#Wriothesley" class="block w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg shadow hover:scale-105 transition" data-thumb>
-          <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" alt="Wriothesley" class="w-full h-full object-cover" />
-        </a>
-      </nav>
-
-      <!-- ★ pt-24 제거하고 동적으로 패딩을 줄 #pageMain 부여 -->
+      <!-- Main -->
       <main id="pageMain" class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 pt-0">
-        <div class="w-full max-w-[960px] flex flex-col gap-0">
-          <!-- Section: MIYU -->
-          <!-- ★ 오타(py-0-) 제거 -->
-          <section id="miyu" class="flex flex-col gap-0 py-0">
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 1" />
+        <div class="w-full max-w-[1100px] flex flex-col gap-0">
+
+          <!-- ================= INDEX ================= -->
+          <section id="index" class="w-full pt-12">
+            <!-- HERO -->
+            <div class="px-2 sm:px-4 md:px-0">
+              <div class="relative rounded-[24px] overflow-hidden border border-slate-200 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop" alt="Hero visual" class="w-full h-[48vh] md:h-[64vh] object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent"></div>
+                <div class="absolute bottom-4 left-5 text-white/90 text-sm">Real-time 3D • Character • Pipeline</div>
+              </div>
             </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 2" />
+
+            <!-- TOOL BANNER under hero -->
+            <div class="flex justify-center py-4">
+              <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/KimChaeYeon.png?raw=true" alt="툴 배너" class="h-10 md:h-12 w-auto opacity-95" />
             </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/Miyu3-2.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 3" />
+
+            <!-- INTRO -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start my-8 md:my-10 px-2 sm:px-4 md:px-0">
+              <div class="rounded-[22px] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop" alt="intro-left" class="w-full h-56 md:h-64 object-cover" />
+              </div>
+              <div class="text-center md:px-6">
+                <h2 class="text-xl md:text-2xl font-extrabold tracking-wide mb-2">WELCOME</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+                  게임-레디 3D 캐릭터 파이프라인(스컬핑 → 리토포 → UV → 텍스처 → 셰이딩 → Unity)을 안정적으로 제공합니다.
+                </p>
+              </div>
+              <div class="rounded-[22px] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1549880338-7eae6c3f77d2?q=80&w=1200&auto=format&fit=crop" alt="intro-right" class="w-full h-56 md:h-64 object-cover" />
+              </div>
             </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 4" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 5" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 6" />
+
+            <!-- CARDS (click -> detail) -->
+            <div class="px-2 sm:px-4 md:px-0 mb-12">
+              <h3 class="text-lg md:text-xl font-black tracking-wide mb-4">WORK</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Card: Miyu -->
+                <button data-open="miyu" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
+                  <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="w-full h-48 object-cover" alt="MIYU thumb" />
+                  <div class="p-3">
+                    <div class="text-xs text-slate-500">CHARACTER</div>
+                    <div class="font-extrabold">MIYU</div>
+                  </div>
+                </button>
+                <!-- Card: Wriothesley -->
+                <button data-open="Wriothesley" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
+                  <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="w-full h-48 object-cover" alt="Wriothesley thumb" />
+                  <div class="p-3">
+                    <div class="text-xs text-slate-500">CHARACTER</div>
+                    <div class="font-extrabold">Wriothesley</div>
+                  </div>
+                </button>
+              </div>
             </div>
           </section>
 
-          <!-- Section: Wriothesley -->
-          <section id="Wriothesley" class="flex flex-col gap-0 py-20 scroll-mt-20">
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 0" />
+          <!-- ================= DETAIL: MIYU ================= -->
+          <section id="miyu" data-project="miyu" class="hidden flex-col gap-0 py-0">
+            <div class="sticky top-[calc(56px+12px)] z-30 mb-4 bg-transparent">
+              <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
             </div>
             <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/1.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 1" />
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 1" />
             </div>
             <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/2.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 2" />
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 2" />
             </div>
             <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/3.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 3" />
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/Miyu3-2.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 3" />
             </div>
             <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/4.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 4" />
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 4" />
             </div>
             <div class="w-full overflow-hidden rounded-md reveal">
-              <img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 5" />
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 5" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 6" />
             </div>
           </section>
+
+          <!-- ================= DETAIL: WRIO ================= -->
+          <section id="Wriothesley" data-project="Wriothesley" class="hidden flex-col gap-0 py-0">
+            <div class="sticky top-[calc(56px+12px)] z-30 mb-4 bg-transparent">
+              <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
+            </div>
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 0" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/1.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 1" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/2.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 2" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/3.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 3" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/4.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 4" />
+            </div>
+            <div class="w-full overflow-hidden rounded-md reveal">
+              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 5" />
+            </div>
+          </section>
+
         </div>
       </main>
 
-      <button id="toTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition opacity-0 pointer-events-none" aria-label="맨 위로">
-        ↑
-      </button>
+      <button id="toTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition opacity-0 pointer-events-none" aria-label="맨 위로">↑</button>
 
       <!-- Lightbox modal -->
       <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
@@ -154,162 +198,107 @@
         <img id="lbImg" alt="확대 이미지" />
         <button class="lb-btn lb-next" id="lbNext" aria-label="다음">›</button>
       </div>
-
     </div>
 
     <script>
-      /* ===== 공용 참조 & 간격 통일 파라미터 ===== */
+      /* ===== 공용 ===== */
       const header = document.getElementById('siteHeader');
       const pageMain = document.getElementById('pageMain');
       const progress = document.getElementById('scrollProgress');
       const toTop = document.getElementById('toTopBtn');
-      const sections = Array.from(document.querySelectorAll('section[id]'));
-      const thumbs = Array.from(document.querySelectorAll('[data-thumb]'));
       const lightbox = document.getElementById('lightbox');
       const lbImg = document.getElementById('lbImg');
       const lbPrev = document.getElementById('lbPrev');
       const lbNext = document.getElementById('lbNext');
       const lbClose = document.getElementById('lbClose');
       const lbTargets = Array.from(document.querySelectorAll('.lb-target'));
-      const GAP = 12; // 네비 스크롤과 첫 화면 간격을 동일하게 만드는 여백
+      const indexSection = document.getElementById('index');
+      const projectSections = Array.from(document.querySelectorAll('[data-project]'));
+      const GAP = 12;
 
-      /* ===== Copy helpers ===== */
+      /* Copy helpers */
       function copyText(element, text) {
         navigator.clipboard.writeText(text).then(() => {
           const tooltip = element.querySelector('.copy-tooltip');
-          if (tooltip) {
-            tooltip.textContent = '✅';
-            setTimeout(() => { tooltip.textContent = '📋'; }, 1600);
-          }
+          if (tooltip) { tooltip.textContent = '✅'; setTimeout(() => { tooltip.textContent = '📋'; }, 1600); }
         });
       }
-      window.copyText = copyText; // inline onclick 접근용
+      window.copyText = copyText;
 
-      function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
       window.scrollToTop = scrollToTop;
 
-      /* ===== 헤더 오프셋을 레이아웃과 스크롤 모두에 적용 (핵심) ===== */
+      /* 헤더 오프셋 적용 */
       function applyHeaderOffset() {
         const offset = header.offsetHeight + GAP;
-        // 첫 화면 레이아웃 패딩 = 네비 이동 오프셋
         pageMain.style.paddingTop = offset + 'px';
-        // 기본 앵커 점프 및 scrollIntoView 대비
-        sections.forEach(s => { s.style.scrollMarginTop = offset + 'px'; });
+        document.querySelectorAll('section[id]').forEach(s => { s.style.scrollMarginTop = offset + 'px'; });
       }
       window.addEventListener('load', applyHeaderOffset, { once: true });
       window.addEventListener('resize', applyHeaderOffset);
       if (document.fonts && document.fonts.ready) { document.fonts.ready.then(applyHeaderOffset); }
 
-      /* ===== Smooth anchor scroll with unified header offset ===== */
-      document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-          const targetId = a.getAttribute('href').slice(1);
-          const target = document.getElementById(targetId);
-          if (!target) return;
-          e.preventDefault();
+      /* Scroll progress */
+      function onScroll() {
+        const st = window.scrollY;
+        const h = document.body.scrollHeight - innerHeight;
+        progress.style.width = (Math.max(0, Math.min(1, h ? st/h : 0)) * 100) + '%';
+        if (st > 300) toTop.classList.remove('opacity-0', 'pointer-events-none');
+        else toTop.classList.add('opacity-0', 'pointer-events-none');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+      /* ===== Index <-> Project 라우팅 ===== */
+      function showIndex() {
+        indexSection.classList.remove('hidden');
+        projectSections.forEach(s => s.classList.add('hidden'));
+        window.scrollTo({ top: 0 });
+        history.replaceState(null, '', '#index');
+      }
+      function showProject(id) {
+        indexSection.classList.add('hidden');
+        projectSections.forEach(s => s.classList.toggle('hidden', s.dataset.project !== id));
+        const target = document.getElementById(id);
+        if (target) {
           const offset = header.offsetHeight + GAP;
           const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
           window.scrollTo({ top: y, behavior: 'smooth' });
-          history.replaceState(null, '', '#' + targetId);
-        });
-      });
-
-      /* ===== Reveal on scroll ===== */
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
-      }, { threshold: 0.12 });
-      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-      /* ===== Progressive image fade-in ===== */
-      document.querySelectorAll('img.fade-img').forEach(img => {
-        if (img.complete) img.classList.add('loaded');
-        img.addEventListener('load', () => img.classList.add('loaded'));
-      });
-
-      /* ===== Scroll progress bar & back-to-top visibility ===== */
-      function onScroll() {
-        const scrollTop = window.scrollY;
-        const docHeight = document.body.scrollHeight - window.innerHeight;
-        const pct = Math.max(0, Math.min(1, docHeight > 0 ? scrollTop / docHeight : 0));
-        progress.style.width = (pct * 100) + '%';
-        if (scrollTop > 300) { toTop.classList.remove('opacity-0', 'pointer-events-none'); }
-        else { toTop.classList.add('opacity-0', 'pointer-events-none'); }
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-
-      /* ===== Scrollspy for thumb nav ===== */
-      const spy = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const idx = sections.indexOf(entry.target);
-            thumbs.forEach((t, i) => t.classList.toggle('thumb-active', i === idx));
-          }
-        });
-      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-      sections.forEach(s => spy.observe(s));
-
-      /* ===== Keyboard shortcuts: j/k move between sections; Esc closes lightbox ===== */
-      document.addEventListener('keydown', (e) => {
-        const tag = (e.target.tagName || '').toLowerCase();
-        if (tag === 'input' || tag === 'textarea') return;
-        const offsetY = header.offsetHeight + GAP;
-        const idx = sections.findIndex(s => {
-          const rect = s.getBoundingClientRect();
-          return rect.top <= offsetY + 20 && rect.bottom > offsetY + 20;
-        });
-        if (e.key.toLowerCase() === 'j') {
-          const next = sections[Math.min(sections.length - 1, (idx < 0 ? 0 : idx + 1))];
-          if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', '#' + id);
         }
-        if (e.key.toLowerCase() === 'k') {
-          const prev = sections[Math.max(0, (idx <= 0 ? 0 : idx - 1))];
-          if (prev) prev.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
-      });
-
-      /* ===== Lightbox ===== */
-      let lbIndex = -1;
-      function openLightbox(i) {
-        lbIndex = i;
-        lbImg.src = lbTargets[i].src;
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-      function closeLightbox() {
-        lightbox.classList.remove('open');
-        document.body.style.overflow = '';
-        lbIndex = -1;
-      }
-      function moveLightbox(dir) {
-        if (lbIndex < 0) return;
-        lbIndex = (lbIndex + dir + lbTargets.length) % lbTargets.length;
-        lbImg.src = lbTargets[lbIndex].src;
       }
 
-      lbTargets.forEach((img, i) => {
-        img.style.cursor = 'zoom-in';
-        img.addEventListener('click', () => openLightbox(i));
-      });
-      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-      lbClose.addEventListener('click', closeLightbox);
-      lbPrev.addEventListener('click', () => moveLightbox(-1));
-      lbNext.addEventListener('click', () => moveLightbox(1));
+      /* 카드 클릭 이벤트 (데이터 속성 기반) */
+      document.querySelectorAll('[data-open]').forEach(btn =>
+        btn.addEventListener('click', () => showProject(btn.dataset.open))
+      );
+      /* 뒤로가기 버튼 */
+      document.querySelectorAll('[data-back]').forEach(btn =>
+        btn.addEventListener('click', showIndex)
+      );
 
-      /* ===== Hash focus on load (with same offset) ===== */
+      /* 해시 진입 처리 */
       window.addEventListener('load', () => {
-        if (location.hash) {
-          const el = document.querySelector(location.hash);
-          if (el) {
-            const offset = header.offsetHeight + GAP;
-            const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({ top: y });
-          }
+        const id = (location.hash || '').replace('#', '');
+        if (!id || id === 'index') showIndex();
+        else {
+          const exists = projectSections.some(s => s.dataset.project === id);
+          exists ? showProject(id) : showIndex();
         }
       });
+
+      /* ===== 라이트박스 ===== */
+      let lbIndex = -1;
+      function openLightbox(i){ lbIndex=i; lbImg.src=lbTargets[i].src; lightbox.classList.add('open'); document.body.style.overflow='hidden'; }
+      function closeLightbox(){ lightbox.classList.remove('open'); document.body.style.overflow=''; lbIndex=-1; }
+      function moveLightbox(dir){ if(lbIndex<0)return; lbIndex=(lbIndex+dir+lbTargets.length)%lbTargets.length; lbImg.src=lbTargets[lbIndex].src; }
+      lbTargets.forEach((img,i)=>{ img.style.cursor='zoom-in'; img.addEventListener('click',()=>openLightbox(i)); });
+      lightbox.addEventListener('click',(e)=>{ if(e.target===lightbox) closeLightbox(); });
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', ()=>moveLightbox(-1));
+      lbNext.addEventListener('click', ()=>moveLightbox(1));
+
+      /* 이미지 페이드인 */
+      document.querySelectorAll('img.fade-img').forEach(img=>{ if(img.complete) img.classList.add('loaded'); img.addEventListener('load',()=>img.classList.add('loaded')); });
     </script>
   </body>
 </html>
