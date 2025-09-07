@@ -4,72 +4,58 @@
     <meta charset="UTF-8" />
     <title>@4Chloey</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Work+Sans:wght@400;500;700;900"
-    />
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Work+Sans:wght@400;500;700;900"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
     <style>
-      /* ---------- Minor utility styles ---------- */
-      .copy-wrapper { position: relative; }
-      /* 이모지: 이메일 오른쪽에 표시 */
-      .copy-tooltip {
-        position: absolute;
-        left: calc(100% + 6px);
-        top: 50%;
-        transform: translateY(-50%);
-        opacity: 0;
-        transition: opacity .2s ease;
-        pointer-events: none;
-        font-size: 1.1rem;
+      /* minor utils */
+      .copy-wrapper{position:relative}
+      .copy-tooltip{position:relative;margin-left:6px;opacity:0;transition:opacity .2s;pointer-events:none;font-size:1.1rem}
+      .copy-wrapper:hover .copy-tooltip{opacity:1}
+      .artstation-text{color:#13aff0}
+
+      /* reveal on scroll */
+      .reveal{opacity:0;transform:translateY(8px);transition:opacity .6s,transform .6s}
+      .reveal.show{opacity:1;transform:translateY(0)}
+      .fade-img{opacity:0;transition:opacity .5s}
+      .fade-img.loaded{opacity:1}
+
+      /* top progress */
+      .progress{position:fixed;top:56px;left:0;height:3px;background:#0d141c;width:0;z-index:60}
+
+      /* lightbox */
+      .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:100}
+      .lightbox.open{display:flex}
+      .lightbox img{max-width:92vw;max-height:92vh;box-shadow:0 10px 30px rgba(0,0,0,.5);border-radius:.5rem}
+      .lb-btn{position:absolute;top:50%;transform:translateY(-50%);font-size:28px;padding:.6rem .8rem;background:rgba(255,255,255,.12);color:#fff;border-radius:.5rem;cursor:pointer;user-select:none}
+      .lb-prev{left:2vw}.lb-next{right:2vw}
+      .lb-close{position:absolute;top:2vh;right:2vw;font-size:28px;padding:.4rem .6rem;background:rgba(255,255,255,.12);border-radius:.5rem}
+
+      /* Notion-like quick nav (detail view only) */
+      .detail-rail{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:70;transition:opacity .25s,transform .25s}
+      .detail-rail.hidden-rail{opacity:0;pointer-events:none;transform:translateY(-50%) translateX(8px)}
+      @media (max-width: 639px){.detail-rail{display:none}} /* sm 미만 숨김 */
+
+      @media (prefers-reduced-motion: reduce){
+        .reveal{transition:none}
+        .fade-img{transition:none}
       }
-      .copy-wrapper:hover .copy-tooltip { opacity: 1; }
-      .artstation-text { color: #13aff0; }
-
-      /* ---------- Reveal on scroll ---------- */
-      .reveal { opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease; }
-      .reveal.show { opacity: 1; transform: translateY(0); }
-
-      /* ---------- Progressive image fade-in ---------- */
-      .fade-img { opacity: 0; transition: opacity .5s ease; }
-      .fade-img.loaded { opacity: 1; }
-
-      /* ---------- Top scroll progress bar ---------- */
-      .progress { position: fixed; top: 56px; left: 0; height: 3px; background: #0d141c; width: 0; z-index: 60; }
-
-      /* ---------- Lightbox ---------- */
-      .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; align-items: center; justify-content: center; z-index: 100; }
-      .lightbox.open { display: flex; }
-      .lightbox img { max-width: 92vw; max-height: 92vh; box-shadow: 0 10px 30px rgba(0,0,0,.5); border-radius: .5rem; }
-      .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); font-size: 28px; padding: .6rem .8rem; background: rgba(255,255,255,.12); color: #fff; border-radius: .5rem; cursor: pointer; user-select: none; }
-      .lb-prev { left: 2vw; }
-      .lb-next { right: 2vw; }
-      .lb-close { position: absolute; top: 2vh; right: 2vw; font-size: 28px; padding: .4rem .6rem; background: rgba(255,255,255,.12); border-radius: .5rem; }
-
-      /* ---------- Prefers-reduced-motion ---------- */
-      @media (prefers-reduced-motion: reduce) { .reveal { transition: none; } .fade-img { transition: none; } }
     </style>
   </head>
 
-  <body class="min-h-screen bg-slate-50 relative" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
+  <body class="min-h-screen bg-slate-50 relative" style='font-family:"Work Sans","Noto Sans",sans-serif'>
     <div class="flex flex-col h-full">
       <!-- Header -->
       <header id="siteHeader" class="flex flex-wrap items-center justify-between border-b border-[#e7edf4] px-5 md:px-10 py-3 bg-white fixed top-0 left-0 right-0 z-50">
-        <!-- Left: brand (@4Chloey) -->
         <div class="flex items-center gap-2 text-[#0d141c] select-none">
           <h2 class="text-lg font-bold tracking-[-0.015em]">@4Chloey</h2>
         </div>
-        <!-- Right: ArtStation ▸ 이메일 -->
         <div class="ml-auto flex flex-wrap items-center gap-4 md:gap-6 lg:gap-8 text-sm font-medium text-[#0d141c] mt-2 md:mt-0 mr-[-6px] md:mr-[-20px]">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/KimChaeYeon.png?raw=true" alt="브랜딩/툴 배너" class="h-7 md:h-8 w-auto rounded-md border border-[#e7edf4] object-contain"/>
           <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="artstation-text hover:underline">Artstation</a>
-          <div class="relative cursor-pointer copy-wrapper flex items-center gap-1" onclick="copyText(this, 'coraline0120@gmail.com')" aria-label="이메일 복사">
-            coraline0120@gmail.com
-            <span class="copy-tooltip" aria-hidden="true">📋</span>
+          <div class="cursor-pointer copy-wrapper flex items-center" onclick="copyText(this,'coraline0120@gmail.com')" aria-label="이메일 복사">
+            coraline0120@gmail.com <span class="copy-tooltip" aria-hidden="true">📋</span>
           </div>
         </div>
       </header>
@@ -80,225 +66,176 @@
       <main id="pageMain" class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 pt-0">
         <div class="w-full max-w-[1100px] flex flex-col gap-0">
 
-          <!-- ================= INDEX ================= -->
+          <!-- ============== INDEX (Hero + Work) ============== -->
           <section id="index" class="w-full pt-12">
             <!-- HERO -->
             <div class="px-2 sm:px-4 md:px-0">
               <div class="relative rounded-[24px] overflow-hidden border border-slate-200 shadow-sm">
-                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop" alt="Hero visual" class="w-full h-[48vh] md:h-[64vh] object-cover" />
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop" alt="Hero visual" class="w-full h-[50vh] md:h-[70vh] object-cover"/>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent"></div>
                 <div class="absolute bottom-4 left-5 text-white/90 text-sm">Real-time 3D • Character • Pipeline</div>
               </div>
             </div>
-
-            <!-- TOOL BANNER under hero -->
-            <div class="flex justify-center py-4">
-              <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/KimChaeYeon.png?raw=true" alt="툴 배너" class="h-10 md:h-12 w-auto opacity-95" />
+            <!-- TOOL BANNER -->
+            <div class="flex justify-center mt-6">
+              <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/KimChaeYeon.png?raw=true" alt="툴 배너" class="h-12 md:h-16 w-auto object-contain"/>
             </div>
 
-            <!-- INTRO -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start my-8 md:my-10 px-2 sm:px-4 md:px-0">
-              <div class="rounded-[22px] overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop" alt="intro-left" class="w-full h-56 md:h-64 object-cover" />
-              </div>
-              <div class="text-center md:px-6">
-                <h2 class="text-xl md:text-2xl font-extrabold tracking-wide mb-2">WELCOME</h2>
-                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
-                  게임-레디 3D 캐릭터 파이프라인(스컬핑 → 리토포 → UV → 텍스처 → 셰이딩 → Unity)을 안정적으로 제공합니다.
-                </p>
-              </div>
-              <div class="rounded-[22px] overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1549880338-7eae6c3f77d2?q=80&w=1200&auto=format&fit=crop" alt="intro-right" class="w-full h-56 md:h-64 object-cover" />
-              </div>
-            </div>
-
-            <!-- CARDS (click -> detail) -->
-            <div class="px-2 sm:px-4 md:px-0 mb-12">
+            <!-- WORK cards -->
+            <section id="work" class="px-2 sm:px-4 md:px-0 my-10">
               <h3 class="text-lg md:text-xl font-black tracking-wide mb-4">WORK</h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Card: Miyu -->
                 <button data-open="miyu" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
-                  <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="w-full h-48 object-cover" alt="MIYU thumb" />
-                  <div class="p-3">
-                    <div class="text-xs text-slate-500">CHARACTER</div>
-                    <div class="font-extrabold">MIYU</div>
-                  </div>
+                  <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="w-full h-48 object-cover" alt="MIYU thumb"/>
+                  <div class="p-3"><div class="text-xs text-slate-500">CHARACTER</div><div class="font-extrabold">MIYU</div></div>
                 </button>
-                <!-- Card: Wriothesley -->
                 <button data-open="Wriothesley" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
-                  <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="w-full h-48 object-cover" alt="Wriothesley thumb" />
-                  <div class="p-3">
-                    <div class="text-xs text-slate-500">CHARACTER</div>
-                    <div class="font-extrabold">Wriothesley</div>
-                  </div>
+                  <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="w-full h-48 object-cover" alt="Wriothesley thumb"/>
+                  <div class="p-3"><div class="text-xs text-slate-500">CHARACTER</div><div class="font-extrabold">Wriothesley</div></div>
                 </button>
               </div>
-            </div>
+            </section>
           </section>
 
-          <!-- ================= DETAIL: MIYU ================= -->
+          <!-- ============== DETAIL: MIYU ============== -->
           <section id="miyu" data-project="miyu" class="hidden flex-col gap-0 py-0">
-            <div class="sticky top-[calc(56px+12px)] z-30 mb-4 bg-transparent">
+            <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
             </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 1" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 2" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/Miyu3-2.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 3" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 4" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 5" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 6" />
-            </div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 1"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(2).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 2"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/Miyu3-2.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 3"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(3).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 4"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(4).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 5"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(5).png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 6"/></div>
           </section>
 
-          <!-- ================= DETAIL: WRIO ================= -->
+          <!-- ============== DETAIL: WRIO ============== -->
           <section id="Wriothesley" data-project="Wriothesley" class="hidden flex-col gap-0 py-0">
-            <div class="sticky top-[calc(56px+12px)] z-30 mb-4 bg-transparent">
+            <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
             </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 0" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/1.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 1" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/2.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 2" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/3.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 3" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/4.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 4" />
-            </div>
-            <div class="w-full overflow-hidden rounded-md reveal">
-              <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 5" />
-            </div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 0"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/1.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 1"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/2.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 2"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/3.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 3"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/4.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 4"/></div>
+            <div class="w-full overflow-hidden rounded-md reveal"><img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 5"/></div>
           </section>
-
         </div>
       </main>
 
+      <!-- Notion-like quick nav (DETAIL 전용) -->
+      <div id="detailQuickNav" class="detail-rail hidden-rail">
+        <!-- trigger -->
+        <button id="detailNavTrigger" class="flex flex-col items-end p-1.5 rounded-lg bg-white/90 backdrop-blur border border-slate-200 shadow hover:shadow-md">
+          <span class="sr-only">Work navigation</span>
+          <div class="h-1.5 w-8 rounded bg-neutral-900 mb-1.5"></div>
+          <div class="h-1 w-8 rounded bg-neutral-300 mb-1.5"></div>
+          <div class="h-1 w-8 rounded bg-neutral-300"></div>
+        </button>
+        <!-- popup -->
+        <div id="detailNavPanel" class="hidden absolute right-[calc(100%+12px)] top-1/2 -translate-y-1/2 w-64 bg-white/95 backdrop-blur border border-slate-200 shadow-xl rounded-2xl p-4">
+          <div class="text-[11px] font-bold tracking-wide" style="color:#89CFF0">MY WORKS</div>
+          <ul class="mt-2 space-y-1.5">
+            <li><button data-open="miyu" class="w-full text-left px-2 py-1 rounded hover:bg-slate-50">MIYU</button></li>
+            <li><button data-open="Wriothesley" class="w-full text-left px-2 py-1 rounded hover:bg-slate-50">Wriothesley</button></li>
+          </ul>
+        </div>
+      </div>
+
       <button id="toTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition opacity-0 pointer-events-none" aria-label="맨 위로">↑</button>
 
-      <!-- Lightbox modal -->
+      <!-- Lightbox -->
       <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
         <button class="lb-close" id="lbClose" aria-label="닫기">✕</button>
         <button class="lb-btn lb-prev" id="lbPrev" aria-label="이전">‹</button>
-        <img id="lbImg" alt="확대 이미지" />
+        <img id="lbImg" alt="확대 이미지"/>
         <button class="lb-btn lb-next" id="lbNext" aria-label="다음">›</button>
       </div>
     </div>
 
     <script>
-      /* ===== 공용 ===== */
-      const header = document.getElementById('siteHeader');
-      const pageMain = document.getElementById('pageMain');
-      const progress = document.getElementById('scrollProgress');
-      const toTop = document.getElementById('toTopBtn');
-      const lightbox = document.getElementById('lightbox');
-      const lbImg = document.getElementById('lbImg');
-      const lbPrev = document.getElementById('lbPrev');
-      const lbNext = document.getElementById('lbNext');
-      const lbClose = document.getElementById('lbClose');
-      const lbTargets = Array.from(document.querySelectorAll('.lb-target'));
-      const indexSection = document.getElementById('index');
-      const projectSections = Array.from(document.querySelectorAll('[data-project]'));
-      const GAP = 12;
+      /* ===== refs ===== */
+      const header=document.getElementById('siteHeader');
+      const pageMain=document.getElementById('pageMain');
+      const progress=document.getElementById('scrollProgress');
+      const toTop=document.getElementById('toTopBtn');
 
-      /* Copy helpers */
-      function copyText(element, text) {
-        navigator.clipboard.writeText(text).then(() => {
-          const tooltip = element.querySelector('.copy-tooltip');
-          if (tooltip) { tooltip.textContent = '✅'; setTimeout(() => { tooltip.textContent = '📋'; }, 1600); }
-        });
-      }
-      window.copyText = copyText;
+      const indexSection=document.getElementById('index');
+      const projectSections=Array.from(document.querySelectorAll('[data-project]'));
 
-      function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-      window.scrollToTop = scrollToTop;
+      const quickNav=document.getElementById('detailQuickNav');
+      const quickTrigger=document.getElementById('detailNavTrigger');
+      const quickPanel=document.getElementById('detailNavPanel');
 
-      /* 헤더 오프셋 적용 */
-      function applyHeaderOffset() {
-        const offset = header.offsetHeight + GAP;
-        pageMain.style.paddingTop = offset + 'px';
-        document.querySelectorAll('section[id]').forEach(s => { s.style.scrollMarginTop = offset + 'px'; });
-      }
-      window.addEventListener('load', applyHeaderOffset, { once: true });
-      window.addEventListener('resize', applyHeaderOffset);
-      if (document.fonts && document.fonts.ready) { document.fonts.ready.then(applyHeaderOffset); }
+      const lightbox=document.getElementById('lightbox');
+      const lbImg=document.getElementById('lbImg');
+      const lbPrev=document.getElementById('lbPrev');
+      const lbNext=document.getElementById('lbNext');
+      const lbClose=document.getElementById('lbClose');
+      const lbTargets=Array.from(document.querySelectorAll('.lb-target'));
 
-      /* Scroll progress */
-      function onScroll() {
-        const st = window.scrollY;
-        const h = document.body.scrollHeight - innerHeight;
-        progress.style.width = (Math.max(0, Math.min(1, h ? st/h : 0)) * 100) + '%';
-        if (st > 300) toTop.classList.remove('opacity-0', 'pointer-events-none');
-        else toTop.classList.add('opacity-0', 'pointer-events-none');
-      }
-      window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+      const GAP=12;
 
-      /* ===== Index <-> Project 라우팅 ===== */
-      function showIndex() {
+      /* copy */
+      function copyText(el,text){navigator.clipboard.writeText(text).then(()=>{const t=el.querySelector('.copy-tooltip');if(t){t.textContent='✅';setTimeout(()=>{t.textContent='📋'},1600)}})}
+      window.copyText=copyText;
+      function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
+      window.scrollToTop=scrollToTop;
+
+      /* header offset */
+      function applyHeaderOffset(){const offset=header.offsetHeight+GAP;pageMain.style.paddingTop=offset+'px';document.querySelectorAll('section[id]').forEach(s=>{s.style.scrollMarginTop=offset+'px'})}
+      window.addEventListener('load',applyHeaderOffset,{once:true});window.addEventListener('resize',applyHeaderOffset);
+      if(document.fonts&&document.fonts.ready){document.fonts.ready.then(applyHeaderOffset)}
+
+      /* scroll progress */
+      function onScroll(){const st=window.scrollY;const h=document.body.scrollHeight-innerHeight;progress.style.width=(Math.max(0,Math.min(1,h?st/h:0))*100)+'%';if(st>300){toTop.classList.remove('opacity-0','pointer-events-none')}else{toTop.classList.add('opacity-0','pointer-events-none')}}
+      window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+      /* reveal on view (fix for invisible images) */
+      const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})},{threshold:0.12});
+      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+      document.querySelectorAll('img.fade-img').forEach(img=>{if(img.complete) img.classList.add('loaded'); img.addEventListener('load',()=>img.classList.add('loaded'))});
+
+      /* routing */
+      function showIndex(){
         indexSection.classList.remove('hidden');
-        projectSections.forEach(s => s.classList.add('hidden'));
-        window.scrollTo({ top: 0 });
-        history.replaceState(null, '', '#index');
+        projectSections.forEach(s=>s.classList.add('hidden'));
+        quickNav.classList.add('hidden-rail'); // detail nav 숨김
+        closeQuickPanel();
+        history.replaceState(null,'','#index');
+        window.scrollTo({top:0});
       }
-      function showProject(id) {
+      function showProject(id){
         indexSection.classList.add('hidden');
-        projectSections.forEach(s => s.classList.toggle('hidden', s.dataset.project !== id));
-        const target = document.getElementById(id);
-        if (target) {
-          const offset = header.offsetHeight + GAP;
-          const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-          history.replaceState(null, '', '#' + id);
-        }
+        projectSections.forEach(s=>s.classList.toggle('hidden',s.dataset.project!==id));
+        // detail nav 표시
+        quickNav.classList.remove('hidden-rail');
+        history.replaceState(null,'','#'+id);
+        window.scrollTo({top:(header.offsetHeight+GAP),behavior:'smooth'});
       }
+      document.querySelectorAll('[data-open]').forEach(btn=>btn.addEventListener('click',()=>showProject(btn.dataset.open)));
+      document.querySelectorAll('[data-back]').forEach(btn=>btn.addEventListener('click',showIndex));
+      window.addEventListener('load',()=>{const id=(location.hash||'').replace('#',''); if(!id||id==='index') showIndex(); else {const ok=projectSections.some(s=>s.dataset.project===id); ok?showProject(id):showIndex();}});
 
-      /* 카드 클릭 이벤트 (데이터 속성 기반) */
-      document.querySelectorAll('[data-open]').forEach(btn =>
-        btn.addEventListener('click', () => showProject(btn.dataset.open))
-      );
-      /* 뒤로가기 버튼 */
-      document.querySelectorAll('[data-back]').forEach(btn =>
-        btn.addEventListener('click', showIndex)
-      );
+      /* notion-like quick nav (detail only) */
+      function toggleQuickPanel(){quickPanel.classList.toggle('hidden')}
+      function closeQuickPanel(){quickPanel.classList.add('hidden')}
+      quickTrigger.addEventListener('click',toggleQuickPanel);
+      document.addEventListener('click',(e)=>{if(!quickNav.contains(e.target)) closeQuickPanel()});
+      document.addEventListener('keydown',(e)=>{if(e.key==='Escape') closeQuickPanel()});
 
-      /* 해시 진입 처리 */
-      window.addEventListener('load', () => {
-        const id = (location.hash || '').replace('#', '');
-        if (!id || id === 'index') showIndex();
-        else {
-          const exists = projectSections.some(s => s.dataset.project === id);
-          exists ? showProject(id) : showIndex();
-        }
-      });
-
-      /* ===== 라이트박스 ===== */
-      let lbIndex = -1;
-      function openLightbox(i){ lbIndex=i; lbImg.src=lbTargets[i].src; lightbox.classList.add('open'); document.body.style.overflow='hidden'; }
-      function closeLightbox(){ lightbox.classList.remove('open'); document.body.style.overflow=''; lbIndex=-1; }
-      function moveLightbox(dir){ if(lbIndex<0)return; lbIndex=(lbIndex+dir+lbTargets.length)%lbTargets.length; lbImg.src=lbTargets[lbIndex].src; }
-      lbTargets.forEach((img,i)=>{ img.style.cursor='zoom-in'; img.addEventListener('click',()=>openLightbox(i)); });
-      lightbox.addEventListener('click',(e)=>{ if(e.target===lightbox) closeLightbox(); });
-      lbClose.addEventListener('click', closeLightbox);
-      lbPrev.addEventListener('click', ()=>moveLightbox(-1));
-      lbNext.addEventListener('click', ()=>moveLightbox(1));
-
-      /* 이미지 페이드인 */
-      document.querySelectorAll('img.fade-img').forEach(img=>{ if(img.complete) img.classList.add('loaded'); img.addEventListener('load',()=>img.classList.add('loaded')); });
+      /* lightbox */
+      let lbIndex=-1;
+      function openLightbox(i){lbIndex=i;lbImg.src=lbTargets[i].src;lightbox.classList.add('open');document.body.style.overflow='hidden'}
+      function closeLightbox(){lightbox.classList.remove('open');document.body.style.overflow='';lbIndex=-1}
+      function moveLightbox(dir){if(lbIndex<0)return;lbIndex=(lbIndex+dir+lbTargets.length)%lbTargets.length;lbImg.src=lbTargets[lbIndex].src}
+      lbTargets.forEach((img,i)=>{img.style.cursor='zoom-in';img.addEventListener('click',()=>openLightbox(i))});
+      lightbox.addEventListener('click',(e)=>{if(e.target===lightbox) closeLightbox()});
+      lbClose.addEventListener('click',closeLightbox);
+      lbPrev.addEventListener('click',()=>moveLightbox(-1));
+      lbNext.addEventListener('click',()=>moveLightbox(1));
     </script>
   </body>
 </html>
