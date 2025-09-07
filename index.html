@@ -17,15 +17,15 @@
     <style>
       /* ===== CSS Variables ===== */
       :root{
-        /* Header glass controls */
+        /* Header glass (코드에서만 수정) */
         --header-bg: rgba(255,255,255,0.0);
         --header-border: rgba(255,255,255,0.0);
         --header-blur: 0px;
 
-        /* Hero text & animation (코드 안에서 조절 가능) */
-        --hero-fg: #ffffff;          /* 배너 텍스트 색 */
-        --hero-fade-dur: .9s;        /* 페이드인 시간 */
-        --hero-fade-delay: .0s;      /* 페이드인 지연 */
+        /* Hero text & animation */
+        --hero-fg: #ffffff;     /* 배너 텍스트 색 */
+        --hero-fade-dur: .9s;   /* 페이드인 시간 */
+        --hero-fade-delay: .0s; /* 페이드인 지연 */
       }
 
       /* ===== Minor utilities ===== */
@@ -38,8 +38,7 @@
       .fade-img{opacity:0;transition:opacity .5s}
       .fade-img.loaded{opacity:1}
 
-      .progress{position:fixed;top:56px;left:0;height:3px;background:#0d141c;width:0;z-index:60}
-
+      /* ===== Lightbox ===== */
       .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:100}
       .lightbox.open{display:flex}
       .lightbox img{max-width:92vw;max-height:92vh;box-shadow:0 10px 30px rgba(0,0,0,.5);border-radius:.5rem}
@@ -60,12 +59,11 @@
       .hero-img{width:100%; height:clamp(52vh, 60vh, 72vh); object-fit:cover; display:block}
       /* 텍스트 레이어 — 항상 위 */
       .hero-copy{
-        position:absolute; inset:0; z-index:10;          /* 이미지 위 */
-        display:grid;                                     /* 정렬은 프리셋에서 */
-        text-align:center; padding:clamp(12px,4vw,40px);
+        position:absolute; inset:0; z-index:10;
+        display:grid; text-align:center; padding:clamp(12px,4vw,40px);
         color:var(--hero-fg);
         animation:heroFade var(--hero-fade-dur) ease var(--hero-fade-delay) both;
-        pointer-events:none;                               /* 배너 클릭 방해 X */
+        pointer-events:none;
       }
       .hero-title{
         font-weight:900;
@@ -79,20 +77,12 @@
         opacity:.95;
         text-shadow:0 1px 2px rgba(0,0,0,.12);
       }
-      /* 위치 프리셋 (이 셋 중 하나만 사용) */
+      /* 위치 프리셋 */
       .hero-pos-center{ place-items:center }
-      .hero-pos-top{
-        place-items:start center;
-        padding-top: var(--hero-pad-top, 10%); /* 값 작을수록 더 위 */
-      }
-      .hero-pos-bottom{
-        place-items:end center;
-        padding-bottom: var(--hero-pad-bottom, 10%);
-      }
-      @keyframes heroFade{
-        from{opacity:0; transform:translateY(10px)}
-        to{opacity:1; transform:translateY(0)}
-      }
+      .hero-pos-top{ place-items:start center; padding-top: var(--hero-pad-top, 10%) }
+      .hero-pos-bottom{ place-items:end center; padding-bottom: var(--hero-pad-bottom, 10%) }
+
+      @keyframes heroFade{ from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
 
       /* Notion-like quick nav (DETAIL only) */
       .detail-rail{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:70;transition:opacity .25s,transform .25s}
@@ -107,11 +97,9 @@
     <div class="flex flex-col h-full">
       <!-- ===== Header ===== -->
       <header id="siteHeader" class="header-glass flex flex-wrap items-center justify-between px-5 md:px-10 py-3 fixed top-0 left-0 right-0 z-50">
-        <!-- 브랜드: 클릭 시 메인 최상단 -->
         <div id="brandHome" class="flex items-center gap-2 text-[#0d141c] select-none cursor-pointer">
           <h2 class="text-lg font-bold tracking-[-0.015em]">@4Chloey</h2>
         </div>
-        <!-- 오른쪽: 툴배너 · 아트스테이션 · 이메일 -->
         <div class="ml-auto flex flex-wrap items-center gap-4 md:gap-6 lg:gap-8 text-sm font-medium text-[#0d141c] mt-2 md:mt-0 mr-[-6px] md:mr-[-20px]">
           <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/KimChaeYeon.png?raw=true" alt="브랜딩/툴 배너" class="h-7 md:h-8 w-auto rounded-md border border-[#e7edf4] object-contain"/>
           <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="artstation-text hover:underline">Artstation</a>
@@ -120,8 +108,6 @@
           </div>
         </div>
       </header>
-
-      <div class="progress" id="scrollProgress" aria-hidden="true"></div>
 
       <!-- ===== Main ===== -->
       <main id="pageMain" class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 pt-0">
@@ -132,8 +118,9 @@
             <!-- HERO -->
             <div class="px-2 sm:px-4 md:px-0">
               <div class="hero-wrap shadow-sm">
+                <!-- 배너 이미지 주소 여기!!! -->
                 <img class="hero-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/main.png?raw=true" alt="Hero visual" />
-                <!-- 위치는 hero-pos-center/top/bottom 중 선택 -->
+                <!-- 위치 프리셋: hero-pos-center / hero-pos-top / hero-pos-bottom -->
                 <div class="hero-copy hero-pos-top" style="--hero-pad-top:3%">
                   <div class="hero-inner">
                     <h1 class="hero-title">Wave To Anchor</h1>
@@ -152,7 +139,6 @@
             <section id="work" class="px-2 sm:px-4 md:px-0 my-10">
               <h3 class="text-lg md:text-xl font-black tracking-wide mb-4">WORK</h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Card: MIYU -->
                 <button data-open="miyu" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
                   <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/MIYU%20(1).png?raw=true" class="w-full h-48 object-cover" alt="MIYU thumb"/>
                   <div class="p-3">
@@ -160,7 +146,6 @@
                     <div class="font-extrabold">MIYU</div>
                   </div>
                 </button>
-                <!-- Card: Wriothesley -->
                 <button data-open="Wriothesley" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
                   <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="w-full h-48 object-cover" alt="Wriothesley thumb"/>
                   <div class="p-3">
@@ -218,25 +203,6 @@
         </div>
       </div>
 
-      <!-- ===== Header Glass Controls (dev helper) ===== -->
-      <div id="hdrCtrl" class="fixed bottom-6 left-6 z-[80]">
-        <button id="hdrCtrlBtn" class="rounded-full shadow bg-white/90 border border-slate-300 px-3 py-2 text-sm hover:shadow-md">🎨 Header</button>
-        <div id="hdrPanel" class="hidden mt-2 w-[260px] rounded-2xl bg-white/95 backdrop-blur border border-slate-200 shadow-xl p-4">
-          <div class="text-xs font-bold mb-2">Header Glass Settings</div>
-          <label class="block text-xs mb-1">Color</label>
-          <input id="hdrColor" type="color" class="w-full h-8 mb-3 border border-slate-200 rounded" value="#ffffff" />
-          <label class="block text-xs mb-1">Opacity (0–100)</label>
-          <input id="hdrAlpha" type="range" min="0" max="100" value="90" class="w-full mb-3" />
-          <label class="block text-xs mb-1">Blur (px)</label>
-          <input id="hdrBlur" type="range" min="0" max="20" value="8" class="w-full mb-3" />
-          <div class="flex gap-2">
-            <button id="hdrSave" class="px-3 py-1.5 rounded bg-neutral-900 text-white text-xs">Apply</button>
-            <button id="hdrReset" class="px-3 py-1.5 rounded border border-slate-300 text-xs">Reset</button>
-          </div>
-          <p class="text-[10px] text-slate-500 mt-2">저장됨: localStorage</p>
-        </div>
-      </div>
-
       <!-- Back-to-top -->
       <button id="toTopBtn" class="fixed bottom-6 right-6 bg-[#0d141c] text-white text-xl rounded-full w-12 h-12 shadow-lg hover:bg-black transition opacity-0 pointer-events-none" aria-label="맨 위로">↑</button>
 
@@ -258,7 +224,6 @@
 
       const header=document.getElementById('siteHeader');
       const pageMain=document.getElementById('pageMain');
-      const progress=document.getElementById('scrollProgress');
       const toTop=document.getElementById('toTopBtn');
       const brandHome=document.getElementById('brandHome');
 
@@ -267,7 +232,6 @@
       const projectSections=Array.from(document.querySelectorAll('[data-project]'));
 
       const quickNav=document.getElementById('detailQuickNav');
-      const quickTrigger=document.getElementById('detailNavTrigger');
       const quickPanel=document.getElementById('detailNavPanel');
 
       const lightbox=document.getElementById('lightbox');
@@ -276,14 +240,6 @@
       const lbNext=document.getElementById('lbNext');
       const lbClose=document.getElementById('lbClose');
       const lbTargets=Array.from(document.querySelectorAll('.lb-target'));
-
-      const hdrCtrlBtn=document.getElementById('hdrCtrlBtn');
-      const hdrPanel=document.getElementById('hdrPanel');
-      const hdrColor=document.getElementById('hdrColor');
-      const hdrAlpha=document.getElementById('hdrAlpha');
-      const hdrBlur=document.getElementById('hdrBlur');
-      const hdrSave=document.getElementById('hdrSave');
-      const hdrReset=document.getElementById('hdrReset');
 
       const GAP=12;
 
@@ -297,10 +253,9 @@
       window.addEventListener('resize',applyHeaderOffset);
       if(document.fonts&&document.fonts.ready){document.fonts.ready.then(applyHeaderOffset);}
 
-      /* 진행바 & Top 버튼 */
+      /* Top 버튼만 유지 (진행도 바 삭제) */
       function onScroll(){
-        const st=window.scrollY; const h=document.body.scrollHeight-innerHeight;
-        progress.style.width=(Math.max(0,Math.min(1,h?st/h:0))*100)+'%';
+        const st=window.scrollY;
         if(st>300) toTop.classList.remove('opacity-0','pointer-events-none');
         else toTop.classList.add('opacity-0','pointer-events-none');
       }
@@ -365,7 +320,7 @@
         if(quickToggle){e.preventDefault(); toggleQuickPanel();}
       });
 
-      document.getElementById('brandHome').addEventListener('click',()=>{showIndex(); forceTop();});
+      brandHome.addEventListener('click',()=>{showIndex(); forceTop();});
 
       function handleHash(){
         const id=(location.hash||'').replace('#','');
@@ -380,8 +335,9 @@
       window.addEventListener('popstate',handleHash);
 
       /* ===== Notion-like Detail Quick Nav ===== */
-      function toggleQuickPanel(){quickPanel.classList.toggle('hidden')}
-      function closeQuickPanel(){quickPanel.classList.add('hidden')}
+      const quickPanelEl=document.getElementById('detailNavPanel');
+      function toggleQuickPanel(){quickPanelEl.classList.toggle('hidden')}
+      function closeQuickPanel(){quickPanelEl.classList.add('hidden')}
       document.addEventListener('click',(e)=>{ if(!document.getElementById('detailQuickNav').contains(e.target)) closeQuickPanel(); });
       document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeQuickPanel(); });
 
@@ -395,49 +351,6 @@
       lbClose.addEventListener('click',closeLightbox);
       lbPrev.addEventListener('click',()=>moveLightbox(-1));
       lbNext.addEventListener('click',()=>moveLightbox(1));
-
-      /* ===== Header Glass Controls ===== */
-      const root=document.documentElement;
-      function hexToRgb(hex){
-        const c=hex.replace('#','');
-        const n=c.length===3? c.split('').map(x=>x+x).join('') : c;
-        const r=parseInt(n.slice(0,2),16), g=parseInt(n.slice(2,4),16), b=parseInt(n.slice(4,6),16);
-        return {r,g,b};
-      }
-      function applyHeaderVars({color='#ffffff', alpha=0.90, blur=8}){
-        const {r,g,b}=hexToRgb(color);
-        root.style.setProperty('--header-bg', `rgba(${r},${g},${b},${alpha})`);
-        root.style.setProperty('--header-border', `rgba(231,237,244,${Math.min(1,alpha+0.2)})`);
-        root.style.setProperty('--header-blur', `${blur}px`);
-        applyHeaderOffset();
-      }
-      function loadHeaderPrefs(){
-        const color=localStorage.getItem('hdrColor')||'#ffffff';
-        const alpha=parseFloat(localStorage.getItem('hdrAlpha')||'0.90');
-        const blur=parseInt(localStorage.getItem('hdrBlur')||'8',10);
-        hdrColor.value=color; hdrAlpha.value=Math.round(alpha*100); hdrBlur.value=blur;
-        applyHeaderVars({color,alpha,blur});
-      }
-      function saveHeaderPrefs(){
-        const color=hdrColor.value;
-        const alpha=(parseInt(hdrAlpha.value,10)||0)/100;
-        const blur=parseInt(hdrBlur.value,10)||0;
-        localStorage.setItem('hdrColor',color);
-        localStorage.setItem('hdrAlpha',String(alpha));
-        localStorage.setItem('hdrBlur',String(blur));
-        applyHeaderVars({color,alpha,blur});
-      }
-      function resetHeaderPrefs(){
-        localStorage.removeItem('hdrColor');
-        localStorage.removeItem('hdrAlpha');
-        localStorage.removeItem('hdrBlur');
-        hdrColor.value='#ffffff'; hdrAlpha.value=90; hdrBlur.value=8;
-        applyHeaderVars({color:'#ffffff',alpha:0.90,blur:8});
-      }
-      hdrCtrlBtn.addEventListener('click',()=>hdrPanel.classList.toggle('hidden'));
-      hdrSave.addEventListener('click',saveHeaderPrefs);
-      hdrReset.addEventListener('click',resetHeaderPrefs);
-      window.addEventListener('load',loadHeaderPrefs);
     </script>
   </body>
 </html>
