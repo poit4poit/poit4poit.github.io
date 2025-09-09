@@ -18,9 +18,14 @@
     <style>
       :root{
         /* 헤더(상단바) 투명/색상 */
-        --header-bg: rgba(255,255,255,0.1);
+        --header-bg: rgba(255,255,255,0.10);
         --header-border: rgba(0,0,0,0);
         --header-blur: 8px;
+
+        /* ▼ 추가: 헤더 링크 색 & 페이드 높이 */
+        --hdr-link: #22282C;          /* Artstation, 이메일 텍스트 색 */
+        --hdr-link-hover: #e5f2ff;    /* 호버 시 */
+        --header-fade-h: 2px;        /* 헤더 하단 페이드 높이 (0px이면 없음) */
 
         /* 히어로 텍스트 */
         --hero-fg: #ffffff;
@@ -38,13 +43,27 @@
       .fade-img{opacity:0;transition:opacity .5s}
       .fade-img.loaded{opacity:1}
 
-      /* 헤더 */
+      /* ===== 헤더 ===== */
       .header-glass{
         background: var(--header-bg);
         -webkit-backdrop-filter: blur(var(--header-blur)) saturate(1.1);
         backdrop-filter: blur(var(--header-blur)) saturate(1.1);
         border-bottom: 1px solid var(--header-border);
       }
+      /* ▼ 추가: 헤더 아래 경계가 메인과 자연스럽게 섞이도록 페이드 */
+      .header-glass::after{
+        content:"";
+        position:absolute;
+        left:0; right:0; bottom:-1px;
+        height: var(--header-fade-h);
+        pointer-events:none;
+        background: linear-gradient(to bottom,
+                    rgba(0,0,0,.28),
+                    rgba(0,0,0,0));
+      }
+      /* ▼ 추가: 헤더 링크 색(변수로 제어) */
+      .header-glass .hdr-link{ color: var(--hdr-link); }
+      .header-glass .hdr-link:hover{ color: var(--hdr-link-hover); }
 
       /* ===== 풀스크린 히어로 ===== */
       .hero-full{
@@ -118,10 +137,10 @@
         <div id="brandHome" class="flex items-center gap-2 text-white select-none cursor-pointer">
           <h2 class="text-lg font-bold tracking-[-0.015em]">@4Chloey</h2>
         </div>
-        <!-- 오른쪽: Artstation · 이메일 (볼드+화이트) -->
-        <div class="ml-auto flex flex-wrap items-center gap-6 text-sm font-bold text-white mt-2 md:mt-0">
-          <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="hover:underline">Artstation</a>
-          <div class="cursor-pointer copy-wrapper flex items-center" onclick="copyText(this,'coraline0120@gmail.com')" aria-label="이메일 복사">
+        <!-- 오른쪽: Artstation · 이메일 (변수로 색 제어) -->
+        <div class="ml-auto flex flex-wrap items-center gap-6 text-sm font-bold mt-2 md:mt-0">
+          <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="hdr-link hover:underline">Artstation</a>
+          <div class="cursor-pointer copy-wrapper flex items-center hdr-link" onclick="copyText(this,'coraline0120@gmail.com')" aria-label="이메일 복사">
             coraline0120@gmail.com <span class="copy-tooltip" aria-hidden="true">📋</span>
           </div>
         </div>
@@ -135,7 +154,7 @@
           <section id="index" class="w-full pt-0">
             <!-- FULLSCREEN HERO -->
             <div class="hero-full overlap-header">
-              <img class="hero-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/8954022cb267b9023d3c0f38f55217ff723cc654a734157b360c6584a6bad056.png?raw=true" alt="Hero visual" />
+              <img class="hero-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Main.gif?raw=true" alt="Hero visual" />
               <div class="hero-copy hero-pos-top" style="--hero-pad-top:6%">
                 <div class="hero-inner">
                   <h1 class="hero-title">Wave To Anchor</h1>
