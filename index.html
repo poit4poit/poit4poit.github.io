@@ -6,29 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Work+Sans:wght@400;500;700;900"
-    />
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Work+Sans:wght@400;500;700;900"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <style>
-      /* ===== CSS Variables ===== */
       :root{
-        /* Header glass (코드에서만 수정) */
         --header-bg: rgba(255,255,255,0.0);
         --header-border: rgba(255,255,255,0.0);
         --header-blur: 0px;
 
-        /* Hero text & animation */
-        --hero-fg: #ffffff;     /* 배너 텍스트 색 */
-        --hero-fade-dur: .9s;   /* 페이드인 시간 */
-        --hero-fade-delay: .0s; /* 페이드인 지연 */
+        /* hero 텍스트/애니 */
+        --hero-fg:#111;             /* 이미지가 밝아서 글자를 어둡게 */
+        --hero-fade-dur:.9s;
+        --hero-fade-delay:.0s;
+
+        /* hero 위치/폭 */
+        --hero-pad-top:7%;
+        --hero-pad-left:7%;
+        --hero-text-width:720px;
+
+        --header-offset:0px;        /* JS에서 주입 */
       }
 
-      /* ===== Minor utilities ===== */
       .copy-tooltip{position:relative;margin-left:6px;opacity:0;transition:opacity .2s ease;pointer-events:none;font-size:1.1rem}
       .copy-wrapper:hover .copy-tooltip{opacity:1}
       .artstation-text{color:#13aff0}
@@ -38,7 +38,6 @@
       .fade-img{opacity:0;transition:opacity .5s}
       .fade-img.loaded{opacity:1}
 
-      /* ===== Lightbox ===== */
       .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:100}
       .lightbox.open{display:flex}
       .lightbox img{max-width:92vw;max-height:92vh;box-shadow:0 10px 30px rgba(0,0,0,.5);border-radius:.5rem}
@@ -46,45 +45,48 @@
       .lb-prev{left:2vw}.lb-next{right:2vw}
       .lb-close{position:absolute;top:2vh;right:2vw;font-size:28px;padding:.4rem .6rem;background:rgba(255,255,255,.12);border-radius:.5rem}
 
-      /* ===== Glassy header ===== */
+      /* 헤더 */
       .header-glass{
-        background: var(--header-bg);
-        -webkit-backdrop-filter: blur(var(--header-blur)) saturate(1.1);
-        backdrop-filter: blur(var(--header-blur)) saturate(1.1);
-        border-bottom: 1px solid var(--header-border);
+        background:var(--header-bg);
+        -webkit-backdrop-filter:blur(var(--header-blur)) saturate(1.1);
+        backdrop-filter:blur(var(--header-blur)) saturate(1.1);
+        border-bottom:1px solid var(--header-border);
       }
 
-      /* ===== HERO (이미지 + 중앙 텍스트) ===== */
-      .hero-wrap{position:relative; border-radius:24px; overflow:hidden; border:1px solid #e5eaf0}
-      .hero-img{width:100%; height:clamp(52vh, 60vh, 72vh); object-fit:cover; display:block}
-      /* 텍스트 레이어 — 항상 위 */
+      /* ===== FULL-BLEED HERO ===== */
+      .hero-bleed{
+        position:relative;
+        width:100vw;
+        left:50%;
+        transform:translateX(-50%);          /* 안정적인 가운데 정렬 */
+        overflow:hidden;
+      }
+      .hero-full{ min-height:calc(100vh - var(--header-offset,0px)); }
+      .hero-bg{
+        position:absolute; inset:0;
+        width:100%; height:100%;
+        object-fit:cover; display:block;
+      }
       .hero-copy{
         position:absolute; inset:0; z-index:10;
-        display:grid; text-align:center; padding:clamp(12px,4vw,40px);
-        color:var(--hero-fg);
+        display:grid; color:var(--hero-fg);
         animation:heroFade var(--hero-fade-dur) ease var(--hero-fade-delay) both;
         pointer-events:none;
+        text-shadow:0 1px 1px rgba(255,255,255,.35); /* 밝은 배경 대비 */
       }
-      .hero-title{
-        font-weight:900;
-        font-size:clamp(28px, 4.8vw, 56px);
-        letter-spacing:-.02em;
-        text-shadow:0 1px 2px rgba(0,0,0,.18);
+      .hero-pos-left-top{
+        place-items:start start;
+        padding-top:var(--hero-pad-top,6%);
+        padding-left:var(--hero-pad-left,6%);
       }
-      .hero-lead{
-        margin-top:.6rem;
-        font-size:clamp(13px, 1.6vw, 18px);
-        opacity:.95;
-        text-shadow:0 1px 2px rgba(0,0,0,.12);
-      }
-      /* 위치 프리셋 */
-      .hero-pos-center{ place-items:center }
-      .hero-pos-top{ place-items:start center; padding-top: var(--hero-pad-top, 10%) }
-      .hero-pos-bottom{ place-items:end center; padding-bottom: var(--hero-pad-bottom, 10%) }
+      .hero-inner{pointer-events:auto;max-width:var(--hero-text-width,720px);text-align:left}
+      .hero-title{font-weight:900;font-size:clamp(40px,6.6vw,84px);line-height:1.05;letter-spacing:-.02em}
+      .hero-lead{margin-top:1rem;font-size:clamp(14px,1.6vw,20px);opacity:.9}
+      .hero-cta{margin-top:1.5rem;display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border-radius:999px;border:1.5px solid rgba(17,24,39,.85);background:transparent;color:inherit;font-weight:700}
+      .hero-cta:hover{background:rgba(17,24,39,.06)}
+      @keyframes heroFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-      @keyframes heroFade{ from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
-
-      /* Notion-like quick nav (DETAIL only) */
+      /* 디테일 퀵 내비 */
       .detail-rail{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:70;transition:opacity .25s,transform .25s}
       .detail-rail.hidden-rail{opacity:0;pointer-events:none;transform:translateY(-50%) translateX(8px)}
       @media (max-width:639px){.detail-rail{display:none}}
@@ -95,7 +97,7 @@
 
   <body class="min-h-screen bg-slate-50 relative" style='font-family:"Work Sans","Noto Sans",sans-serif'>
     <div class="flex flex-col h-full">
-      <!-- ===== Header ===== -->
+      <!-- Header -->
       <header id="siteHeader" class="header-glass flex flex-wrap items-center justify-between px-5 md:px-10 py-3 fixed top-0 left-0 right-0 z-50">
         <div id="brandHome" class="flex items-center gap-2 text-[#0d141c] select-none cursor-pointer">
           <h2 class="text-lg font-bold tracking-[-0.015em]">@4Chloey</h2>
@@ -109,55 +111,48 @@
         </div>
       </header>
 
-      <!-- ===== Main ===== -->
-      <main id="pageMain" class="flex justify-center px-2 sm:px-5 md:px-10 lg:px-20 pt-0">
-        <div class="w-full max-w-[1100px] flex flex-col gap-0">
+      <!-- 메인 -->
+      <main id="pageMain" class="flex flex-col items-center pt-0">
+        <!-- ===== FULL-BLEED HERO ===== -->
+        <section id="hero" class="hero-bleed hero-full">
+          <!-- ✅ 새 배너 이미지 -->
+          <img class="hero-bg" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/8954022cb267b9023d3c0f38f55217ff723cc654a734157b360c6584a6bad056.png?raw=true" alt="Hero visual" />
+          <div class="hero-copy hero-pos-left-top" style="--hero-pad-top:7%; --hero-pad-left:7%;">
+            <div class="hero-inner">
+              <h1 class="hero-title">Wave To Anchor</h1>
+              <p class="hero-lead">Game-ready 3D Characters • Real-time Pipeline</p>
+              <a href="#work" class="hero-cta">Explore</a>
+            </div>
+          </div>
+        </section>
 
-          <!-- ===== INDEX (Hero + Work) ===== -->
-          <section id="index" class="w-full pt-12">
-            <!-- HERO -->
-            <div class="px-2 sm:px-4 md:px-0">
-              <div class="hero-wrap shadow-sm">
-                <!-- 배너 이미지 주소 여기!!! -->
-                <img class="hero-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/main.png?raw=true" alt="Hero visual" />
-                <!-- 위치 프리셋: hero-pos-center / hero-pos-top / hero-pos-bottom -->
-                <div class="hero-copy hero-pos-top" style="--hero-pad-top:3%">
-                  <div class="hero-inner">
-                    <h1 class="hero-title">Wave To Anchor</h1>
-                    <p class="hero-lead">Game-ready 3D Characters • Real-time Pipeline</p>
-                  </div>
+        <!-- 이하 콘텐츠 -->
+        <div class="w-full max-w-[1100px] px-2 sm:px-5 md:px-10 lg:px-20">
+          <div class="flex justify-center mt-6">
+            <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/KimChaeYeon.png?raw=true" alt="툴 배너" class="h-12 md:h-16 w-auto object-contain"/>
+          </div>
+
+          <section id="work" class="px-2 sm:px-4 md:px-0 my-10">
+            <h3 class="text-lg md:text-xl font-black tracking-wide mb-4">WORK</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <button data-open="miyu" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
+                <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu3_KimChaeYeon.png?raw=true" class="w-full h-48 object-cover" alt="MIYU thumb"/>
+                <div class="p-3">
+                  <div class="text-xs text-slate-500">CHARACTER</div>
+                  <div class="font-extrabold">MIYU</div>
                 </div>
-              </div>
+              </button>
+              <button data-open="Wriothesley" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
+                <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="w-full h-48 object-cover" alt="Wriothesley thumb"/>
+                <div class="p-3">
+                  <div class="text-xs text-slate-500">CHARACTER</div>
+                  <div class="font-extrabold">Wriothesley</div>
+                </div>
+              </button>
             </div>
-
-            <!-- TOOL BANNER -->
-            <div class="flex justify-center mt-6">
-              <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/KimChaeYeon.png?raw=true" alt="툴 배너" class="h-12 md:h-16 w-auto object-contain"/>
-            </div>
-
-            <!-- WORK GRID -->
-            <section id="work" class="px-2 sm:px-4 md:px-0 my-10">
-              <h3 class="text-lg md:text-xl font-black tracking-wide mb-4">WORK</h3>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button data-open="miyu" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
-                  <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu3_KimChaeYeon.png?raw=true" class="w-full h-48 object-cover" alt="MIYU thumb"/>
-                  <div class="p-3">
-                    <div class="text-xs text-slate-500">CHARACTER</div>
-                    <div class="font-extrabold">MIYU</div>
-                  </div>
-                </button>
-                <button data-open="Wriothesley" class="group rounded-2xl overflow-hidden bg-white border border-slate-200 shadow hover:shadow-lg transition text-left">
-                  <img src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/0.jpg?raw=true" class="w-full h-48 object-cover" alt="Wriothesley thumb"/>
-                  <div class="p-3">
-                    <div class="text-xs text-slate-500">CHARACTER</div>
-                    <div class="font-extrabold">Wriothesley</div>
-                  </div>
-                </button>
-              </div>
-            </section>
           </section>
 
-          <!-- ===== DETAIL: MIYU ===== -->
+          <!-- DETAIL: MIYU -->
           <section id="miyu" data-project="miyu" class="hidden flex-col gap-0 py-0">
             <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
@@ -172,7 +167,7 @@
             <div class="w-full overflow-hidden rounded-md reveal"><img loading="lazy" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_Unity_KimChaeYeon.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 6"/></div>
           </section>
 
-          <!-- ===== DETAIL: WRIO ===== -->
+          <!-- DETAIL: WRIO -->
           <section id="Wriothesley" data-project="Wriothesley" class="hidden flex-col gap-0 py-0">
             <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
@@ -184,11 +179,10 @@
             <div class="w-full overflow-hidden rounded-md reveal"><img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/4.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 4"/></div>
             <div class="w-full overflow-hidden rounded-md reveal"><img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 5"/></div>
           </section>
-
         </div>
       </main>
 
-      <!-- ===== Detail Quick Nav ===== -->
+      <!-- Detail Quick Nav -->
       <div id="detailQuickNav" class="detail-rail hidden-rail">
         <button id="detailNavTrigger" class="flex flex-col items-end p-1.5 rounded-lg bg-white/90 backdrop-blur border border-slate-200 shadow hover:shadow-md">
           <span class="sr-only">Work navigation</span>
@@ -218,10 +212,8 @@
     </div>
 
     <script>
-      /* ===== helpers ===== */
       function copyText(el,text){navigator.clipboard.writeText(text).then(()=>{const t=el.querySelector('.copy-tooltip');if(t){t.textContent='✅';setTimeout(()=>{t.textContent='📋'},1600)}})}
       window.copyText=copyText;
-
       if('scrollRestoration' in history){history.scrollRestoration='manual';}
 
       const header=document.getElementById('siteHeader');
@@ -229,10 +221,8 @@
       const toTop=document.getElementById('toTopBtn');
       const brandHome=document.getElementById('brandHome');
 
-      const indexSection=document.getElementById('index');
       const workSection=document.getElementById('work');
       const projectSections=Array.from(document.querySelectorAll('[data-project]'));
-
       const quickNav=document.getElementById('detailQuickNav');
       const quickPanel=document.getElementById('detailNavPanel');
 
@@ -245,9 +235,10 @@
 
       const GAP=12;
 
-      /* 헤더 오프셋 */
+      /* 헤더 오프셋 + hero 높이 변수 주입 */
       function applyHeaderOffset(){
         const offset=header.offsetHeight+GAP;
+        document.documentElement.style.setProperty('--header-offset', offset+'px');
         pageMain.style.paddingTop=offset+'px';
         document.querySelectorAll('section[id]').forEach(s=>{s.style.scrollMarginTop=offset+'px';});
       }
@@ -255,7 +246,7 @@
       window.addEventListener('resize',applyHeaderOffset);
       if(document.fonts&&document.fonts.ready){document.fonts.ready.then(applyHeaderOffset);}
 
-      /* Top 버튼만 유지 (진행도 바 삭제) */
+      /* Top 버튼 */
       function onScroll(){
         const st=window.scrollY;
         if(st>300) toTop.classList.remove('opacity-0','pointer-events-none');
@@ -264,33 +255,24 @@
       window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
       toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-      /* 리빌 & 페이드 */
+      /* 리빌/페이드 */
       const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})},{threshold:0.12});
       document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       document.querySelectorAll('img.fade-img').forEach(img=>{if(img.complete)img.classList.add('loaded');img.addEventListener('load',()=>img.classList.add('loaded'))});
 
-      /* ===== 강제 최상단 유틸 ===== */
-      function forceTopSync(){
-        const de=document.documentElement; const old=de.style.scrollBehavior; de.style.scrollBehavior='auto';
-        window.scrollTo(0,0); de.scrollTop=0; document.body.scrollTop=0;
-        setTimeout(()=>{de.style.scrollBehavior=old||'';},0);
-      }
-      function forceTop(){
-        forceTopSync();
-        requestAnimationFrame(forceTopSync);
-        setTimeout(forceTopSync, 350);
-      }
+      /* 최상단 강제 */
+      function forceTopSync(){const de=document.documentElement;const old=de.style.scrollBehavior;de.style.scrollBehavior='auto';window.scrollTo(0,0);de.scrollTop=0;document.body.scrollTop=0;setTimeout(()=>{de.style.scrollBehavior=old||'';},0)}
+      function forceTop(){forceTopSync();requestAnimationFrame(forceTopSync);setTimeout(forceTopSync,350)}
 
-      /* ===== 라우팅 ===== */
+      /* 라우팅 */
       function showIndex(){
-        indexSection.classList.remove('hidden');
         projectSections.forEach(s=>s.classList.add('hidden'));
         if(quickNav){quickNav.classList.add('hidden-rail'); closeQuickPanel();}
         history.replaceState(null,'','#index');
       }
       function openProject(id){
-        indexSection.classList.add('hidden');
-        projectSections.forEach(s=>s.classList.toggle('hidden', s.dataset.project!==id));
+        showIndex();
+        document.querySelector('[data-project="'+id+'"]').classList.remove('hidden');
         if(quickNav) quickNav.classList.remove('hidden-rail');
         history.replaceState(null,'','#'+id);
         forceTop();
@@ -305,21 +287,23 @@
       }
 
       document.addEventListener('click',(e)=>{
-        const hashLink=e.target.closest('a[href^="#"]');
-        if(hashLink){
-          const id=hashLink.getAttribute('href').slice(1);
-          if(id && projectSections.some(s=>s.dataset.project===id)){
+        const a=e.target.closest('a[href^="#"]');
+        if(a){
+          const id=a.getAttribute('href').slice(1);
+          if(id==='work'){
             e.preventDefault();
-            openProject(id);
+            const offset=header.offsetHeight+GAP;
+            const y=workSection.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top:y,behavior:'smooth'});
+            history.replaceState(null,'','#work');
             return;
           }
+          if(['miyu','Wriothesley'].includes(id)){ e.preventDefault(); openProject(id); return; }
         }
         const openBtn=e.target.closest('[data-open]');
         const backBtn=e.target.closest('[data-back]');
-        const quickToggle=e.target.closest('#detailNavTrigger');
-        if(openBtn){e.preventDefault(); openProject(openBtn.dataset.open);} 
+        if(openBtn){e.preventDefault(); openProject(openBtn.dataset.open);}
         if(backBtn){e.preventDefault(); backToWork();}
-        if(quickToggle){e.preventDefault(); toggleQuickPanel();}
       });
 
       brandHome.addEventListener('click',()=>{showIndex(); forceTop();});
@@ -327,23 +311,20 @@
       function handleHash(){
         const id=(location.hash||'').replace('#','');
         if(!id||id==='index'){ showIndex(); forceTop(); }
-        else {
-          const ok=projectSections.some(s=>s.dataset.project===id);
-          ok?openProject(id):showIndex();
-        }
+        else if(['miyu','Wriothesley'].includes(id)){ openProject(id); }
+        else { showIndex(); }
       }
       window.addEventListener('load',handleHash);
       window.addEventListener('hashchange',handleHash);
       window.addEventListener('popstate',handleHash);
 
-      /* ===== Notion-like Detail Quick Nav ===== */
-      const quickPanelEl=document.getElementById('detailNavPanel');
-      function toggleQuickPanel(){quickPanelEl.classList.toggle('hidden')}
-      function closeQuickPanel(){quickPanelEl.classList.add('hidden')}
+      /* Quick Nav 패널 */
+      function toggleQuickPanel(){quickPanel.classList.toggle('hidden')}
+      function closeQuickPanel(){quickPanel.classList.add('hidden')}
       document.addEventListener('click',(e)=>{ if(!document.getElementById('detailQuickNav').contains(e.target)) closeQuickPanel(); });
       document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeQuickPanel(); });
 
-      /* ===== Lightbox ===== */
+      /* Lightbox */
       let lbIndex=-1;
       function openLightbox(i){lbIndex=i;lbImg.src=lbTargets[i].src;lightbox.classList.add('open');document.body.style.overflow='hidden'}
       function closeLightbox(){lightbox.classList.remove('open');document.body.style.overflow='';lbIndex=-1}
@@ -351,8 +332,8 @@
       lbTargets.forEach((img,i)=>{img.style.cursor='zoom-in';img.addEventListener('click',()=>openLightbox(i))});
       lightbox.addEventListener('click',(e)=>{if(e.target===lightbox)closeLightbox()});
       lbClose.addEventListener('click',closeLightbox);
-      lbPrev.addEventListener('click',()=>moveLightbox(-1));
-      lbNext.addEventListener('click',()=>moveLightbox(1));
+      lbPrev?.addEventListener('click',()=>moveLightbox(-1));
+      lbNext?.addEventListener('click',()=>moveLightbox(1));
     </script>
   </body>
 </html>
