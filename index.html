@@ -7,12 +7,8 @@
 
     <!-- Noto Sans만 사용 -->
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&display=swap"
-    />
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&display=swap" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <style>
@@ -22,10 +18,10 @@
         --header-border: rgba(0,0,0,0);
         --header-blur: 8px;
 
-        /* ▼ 추가: 헤더 링크 색 & 페이드 높이 */
-        --hdr-link: #22282C;          /* Artstation, 이메일 텍스트 색 */
-        --hdr-link-hover: #e5f2ff;    /* 호버 시 */
-        --header-fade-h: 2px;        /* 헤더 하단 페이드 높이 (0px이면 없음) */
+        /* 헤더 링크 색 & 페이드 높이 (여기서 색 바꿔) */
+        --hdr-link: #22282C;       /* Artstation, 이메일 텍스트 색 */
+        --hdr-link-hover: #e5f2ff; /* 호버 */
+        --header-fade-h: 2px;      /* 헤더 하단 페이드 높이 (0px이면 없음) */
 
         /* 히어로 텍스트 */
         --hero-fg: #ffffff;
@@ -34,6 +30,8 @@
 
         --header-offset: 0px; /* JS가 채움 */
       }
+
+      html{scroll-behavior:smooth;} /* 앵커 스크롤 부드럽게 */
 
       .copy-tooltip{position:relative;margin-left:6px;opacity:0;transition:opacity .2s ease;pointer-events:none;font-size:1.1rem}
       .copy-wrapper:hover .copy-tooltip{opacity:1}
@@ -45,41 +43,31 @@
 
       /* ===== 헤더 ===== */
       .header-glass{
+        position:fixed; left:0; right:0; top:0; z-index:50;
         background: var(--header-bg);
         -webkit-backdrop-filter: blur(var(--header-blur)) saturate(1.1);
         backdrop-filter: blur(var(--header-blur)) saturate(1.1);
         border-bottom: 1px solid var(--header-border);
       }
-      /* ▼ 추가: 헤더 아래 경계가 메인과 자연스럽게 섞이도록 페이드 */
       .header-glass::after{
         content:"";
-        position:absolute;
-        left:0; right:0; bottom:-1px;
+        position:absolute; left:0; right:0; bottom:-1px;
         height: var(--header-fade-h);
         pointer-events:none;
-        background: linear-gradient(to bottom,
-                    rgba(0,0,0,.28),
-                    rgba(0,0,0,0));
+        background: linear-gradient(to bottom, rgba(0,0,0,.28), rgba(0,0,0,0));
       }
-      /* ▼ 추가: 헤더 링크 색(변수로 제어) */
       .header-glass .hdr-link{ color: var(--hdr-link); }
       .header-glass .hdr-link:hover{ color: var(--hdr-link-hover); }
 
       /* ===== 풀스크린 히어로 ===== */
       .hero-full{
         position: relative;
-        width: 100vw;
-        min-height: 100vh;
+        width: 100vw; min-height: 100vh;
         margin-left: calc(50% - 50vw);
         margin-right: calc(50% - 50vw);
         overflow: hidden;
       }
-      .hero-img{
-        position:absolute; inset:0;
-        width:100%; height:100%;
-        object-fit:cover; display:block;
-      }
-      /* 헤더와 겹치게(틈 제거) */
+      .hero-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
       .overlap-header{ margin-top: calc(var(--header-offset, 0px) * -1); }
 
       /* 텍스트 레이어 */
@@ -93,25 +81,15 @@
       }
       .hero-inner{ pointer-events:auto; }
 
-      .hero-title{
-        font-weight:900;
-        font-size:clamp(32px, 6vw, 72px);
-        letter-spacing:-.02em;
-      }
-      .hero-lead{
-        margin-top:.6rem;
-        font-size:clamp(14px, 1.6vw, 20px);
-        opacity:.95;
-      }
+      .hero-title{ font-weight:900; font-size:clamp(32px, 6vw, 72px); letter-spacing:-.02em; }
+      .hero-lead{ margin-top:.6rem; font-size:clamp(14px, 1.6vw, 20px); opacity:.95; }
 
-      /* Explore 버튼 */
+      /* CTA 버튼 */
       .hero-cta{
         display:inline-block; margin-top:1.1rem;
-        padding:.65rem 1.1rem;
-        border-radius:9999px;
+        padding:.65rem 1.1rem; border-radius:9999px;
         border:1px solid rgba(255,255,255,.7);
-        background:rgba(255,255,255,.10);
-        color:#fff; font-weight:700;
+        background:rgba(255,255,255,.10); color:#fff; font-weight:700;
         font-size:clamp(13px,1.2vw,16px);
         backdrop-filter:saturate(1.1) blur(2px);
         transition:transform .15s ease, background .2s ease, border-color .2s ease;
@@ -133,11 +111,10 @@
   <body class="min-h-screen bg-slate-50 relative" style='font-family:"Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif'>
     <div class="flex flex-col h-full">
       <!-- ===== Header ===== -->
-      <header id="siteHeader" class="header-glass flex flex-wrap items-center justify-between px-5 md:px-10 py-3 fixed top-0 left-0 right-0 z-50">
+      <header id="siteHeader" class="header-glass flex flex-wrap items-center justify-between px-5 md:px-10 py-3">
         <div id="brandHome" class="flex items-center gap-2 text-white select-none cursor-pointer">
           <h2 class="text-lg font-bold tracking-[-0.015em]">@4Chloey</h2>
         </div>
-        <!-- 오른쪽: Artstation · 이메일 (변수로 색 제어) -->
         <div class="ml-auto flex flex-wrap items-center gap-6 text-sm font-bold mt-2 md:mt-0">
           <a href="https://www.artstation.com/chaeyeonkim" target="_blank" class="hdr-link hover:underline">Artstation</a>
           <div class="cursor-pointer copy-wrapper flex items-center hdr-link" onclick="copyText(this,'coraline0120@gmail.com')" aria-label="이메일 복사">
@@ -159,7 +136,8 @@
                 <div class="hero-inner">
                   <h1 class="hero-title">Wave To Anchor</h1>
                   <p class="hero-lead">Game-ready 3D Characters • Vtuber</p>
-                  <a href="#work" class="hero-cta" aria-label="작업 섹션으로 이동">Explore</a>
+                  <!-- ▼ Explore → Scroll Down 으로 변경 -->
+                  <a href="#work" class="hero-cta" aria-label="작업 섹션으로 이동">Scroll Down</a>
                 </div>
               </div>
             </div>
@@ -207,7 +185,7 @@
             </section>
           </section>
 
-          <!-- ===== DETAIL: MIYU ===== -->
+          <!-- ===== DETAIL 섹션들 (생략 없이 그대로) ===== -->
           <section id="miyu" data-project="miyu" class="hidden flex-col gap-0 py-0">
             <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
@@ -222,7 +200,6 @@
             <div class="w-full overflow-hidden rounded-md reveal"><img loading="lazy" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_Unity_KimChaeYeon.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU 8"/></div>
           </section>
 
-          <!-- ===== DETAIL: WRIO ===== -->
           <section id="Wriothesley" data-project="Wriothesley" class="hidden flex-col gap-0 py-0">
             <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
@@ -235,7 +212,6 @@
             <div class="w-full overflow-hidden rounded-md reveal"><img loading="lazy" src="https://github.com/4YooHyun/4YooHyun.github.io/blob/main/5.jpg?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="Wriothesley 5"/></div>
           </section>
 
-          <!-- ===== DETAIL: MIYU #2 ===== -->
           <section id="miyu-2" data-project="miyu-2" class="hidden flex-col gap-0 py-0">
             <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
@@ -244,7 +220,6 @@
             <div class="w-full overflow-hidden rounded-md reveal"><img loading="lazy" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu3_KimChaeYeon.png?raw=true" class="fade-img w-full h-auto object-contain max-h-[100vh] lb-target" alt="MIYU2 B"/></div>
           </section>
 
-          <!-- ===== DETAIL: MIYU #3 ===== -->
           <section id="miyu-3" data-project="miyu-3" class="hidden flex-col gap-0 py-0">
             <div class="sticky top-[calc(56px+12px)] z-30 mb-4">
               <button class="px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50" data-back>← 포트폴리오로</button>
@@ -329,10 +304,10 @@
       }
 
       /* ===== 라우팅 ===== */
-      function showIndex(){
+      function showIndex(changeHash=true){
         indexSection.classList.remove('hidden');
         projectSections.forEach(s=>s.classList.add('hidden'));
-        history.replaceState(null,'','#index');
+        if (changeHash) history.replaceState(null,'','#index');
       }
       function openProject(id){
         indexSection.classList.add('hidden');
@@ -341,7 +316,7 @@
         forceTop();
       }
       function backToWork(){
-        showIndex();
+        showIndex(false);
         requestAnimationFrame(()=>{
           const offset=header.offsetHeight+GAP+8;
           const y=workSection.getBoundingClientRect().top + window.pageYOffset - offset;
@@ -353,11 +328,9 @@
         const hashLink=e.target.closest('a[href^="#"]');
         if(hashLink){
           const id=hashLink.getAttribute('href').slice(1);
-          if(id && projectSections.some(s=>s.dataset.project===id)){
-            e.preventDefault();
-            openProject(id);
-            return;
-          }
+          const isProject = projectSections.some(s=>s.dataset.project===id);
+          if(isProject){ e.preventDefault(); openProject(id); return; }
+          // 프로젝트가 아니면 브라우저 기본 앵커 스크롤 사용
         }
         const openBtn=e.target.closest('[data-open]');
         const backBtn=e.target.closest('[data-back]');
@@ -368,11 +341,13 @@
       brandHome.addEventListener('click',()=>{showIndex(); forceTop();});
 
       function handleHash(){
-        const id=(location.hash||'').replace('#','');
-        if(!id||id==='index'){ showIndex(); forceTop(); }
+        const id=(location.hash||'').slice(1);
+        if(!id || id==='index'){ showIndex(false); return; }
+        const isProject = projectSections.some(s=>s.dataset.project===id);
+        if(isProject){ openProject(id); }
         else {
-          const ok=projectSections.some(s=>s.dataset.project===id);
-          ok?openProject(id):showIndex();
+          // 일반 앵커(#work 등) → 인덱스만 보이게 하고 해시는 유지하여 스크롤 유지
+          showIndex(false);
         }
       }
       window.addEventListener('load',handleHash);
