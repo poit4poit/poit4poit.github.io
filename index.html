@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <title>4Chloey | 3D Artist (@4Chloey)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="김채연 (4Chloey) — 3D 아티스트 포트폴리오, UTS/URP/HDRP, 캐릭터 모델링" />
-  <link rel="canonical" href="https://4Chloey.github.io/" />
+  <meta name="description" content="김채연 (4Chloey) — 3D 아티스트 포트폴리오. 실시간 셰이딩, UTS/URP/HDRP, 하드서페이스·캐릭터 모델링." />
+  <link rel="canonical" href="https://forkleway.github.io/" />
   <link rel="icon" href="/favicon.ico" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="4Chloey" />
   <meta property="og:title" content="4Chloey | 3D Artist" />
-  <meta property="og:description" content="4Chloey 포트폴리오 — 캐릭터/프롭" />
-  <meta property="og:url" content="https://4Chloey.github.io/" />
+  <meta property="og:description" content="김채연 (4Chloey)의 포트폴리오 — 캐릭터/프롭, Unity(URP/HDRP), UTS 셰이딩." />
+  <meta property="og:url" content="https://forkleway.github.io/" />
   <meta property="og:image" content="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu3_KimChaeYeon.png?raw=true" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@4Chloey" />
@@ -24,10 +24,22 @@
 
   <style>
     html{scroll-behavior:smooth}
-    body{font-family:"Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:#111}
+    body{font-family:"Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:#111;margin:0}
 
-    .layout{display:flex;min-height:100vh;background:#fafafa}
-    .sidebar{width:240px;min-height:100vh;position:fixed;top:0;left:0;background:#fff;border-right:1px solid #e5e7eb;padding:1.5rem;overflow-y:auto;text-align:center;z-index:50}
+    /* ===== Top Glass Bar ===== */
+    .topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(255,255,255,0.65);backdrop-filter:blur(10px);border-bottom:1px solid #e5e7eb;z-index:70;display:flex;align-items:center;gap:12px;padding:0 12px}
+    .topbar .left,.topbar .center,.topbar .right{display:flex;align-items:center}
+    .topbar .left{min-width:84px}
+    .topbar .center{flex:1;justify-content:center}
+    .topbar .right{min-width:84px;justify-content:flex-end}
+    .brand{font-weight:800}
+    .topbar img.logo{height:30px;width:auto;display:block}
+    .hamburger{cursor:pointer;width:26px;height:18px;display:flex;flex-direction:column;justify-content:space-between}
+    .hamburger span{display:block;height:3px;background:#111;border-radius:2px}
+
+    /* ===== Layout ===== */
+    .layout{display:flex;min-height:100vh;background:#fafafa;padding-top:56px}
+    .sidebar{width:240px;min-height:calc(100vh - 56px);position:fixed;top:56px;left:0;background:#fff;border-right:1px solid #e5e7eb;padding:1.5rem;overflow-y:auto;text-align:center;z-index:50}
     .profile-photo{display:inline-block;transition:transform .25s ease}
     .profile-photo:hover img{transform:scale(1.05)}
     .profile-name{display:inline-block;transition:color .25s ease}
@@ -38,13 +50,15 @@
     .sidebar nav a{display:block;font-size:.9rem;color:#222;margin:.35rem 0;padding:.15rem 0;transition:color .2s}
     .sidebar nav a:hover{color:#000;text-decoration:underline}
 
-    .content{margin-left:240px;flex:1;padding:2rem}
+    .content{margin-left:240px;flex:1;padding:2rem;padding-top:32px}
 
-    .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:4px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
+    .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
     .grid-card:hover{box-shadow:0 3px 6px rgba(0,0,0,.12);transform:translateY(-2px)}
-    .thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+    .thumb{aspect-ratio:4/3;width:100%;object-fit:cover;display:block}
 
-    .grid-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+    .grid{display:grid;gap:1.25rem}
+    @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
 
     [data-project]{display:none}
     [data-project].active{display:block}
@@ -57,35 +71,47 @@
     .back-btn{display:inline-block;margin-bottom:1rem;padding:.4rem .8rem;font-size:.85rem;border:1px solid #d1d5db;border-radius:4px;background:#fff;cursor:pointer;transition:background .2s}
     .back-btn:hover{background:#f3f4f6}
 
-    .project-img{width:100%;height:auto;max-height:100vh;object-fit:contain;margin-bottom:1rem;border-radius:6px}
+    .project-img{width:100%;height:auto;object-fit:contain;border-radius:6px;margin-bottom:1rem}
 
-    /* Mobile nav */
-    .mobile-header{display:none;position:fixed;top:0;left:0;right:0;height:56px;background:#fff;border-bottom:1px solid #e5e7eb;z-index:50;align-items:center;justify-content:space-between;padding:0 1rem}
-    .hamburger{cursor:pointer;width:24px;height:18px;display:flex;flex-direction:column;justify-content:space-between}
-    .hamburger span{display:block;height:3px;background:#111;border-radius:2px}
-    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:#fff;border-bottom:1px solid #e5e7eb;z-index:40;padding:1rem}
-    .mobile-menu a{display:block;padding:.5rem 0;color:#222;font-weight:600}
+    /* ===== Mobile ===== */
+    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);z-index:65;padding:1rem}
+    .mobile-menu a{display:block;padding:.7rem 0;color:#222;font-weight:700}
 
     @media(max-width:768px){
       .sidebar{display:none}
-      .content{margin-left:0;padding-top:70px}
-      .mobile-header{display:flex}
+      .content{margin-left:0;padding:1.25rem;padding-top:76px}
+      .brand{font-size:1rem}
+      .hamburger{display:flex}
     }
+    @media(min-width:769px){
+      .hamburger{display:none}
+    }
+
+    /* === 추가: WORK 글자와 메뉴 숨기기 === */
+    .sidebar nav a[data-nav="work"] { display: none !important; }
+    #work .section-title { display: none !important; }
   </style>
 </head>
 <body>
+  <!-- Top Glass Bar -->
+  <div class="topbar">
+    <div class="left"><a class="brand" href="#work" data-nav="work">4Chloey</a></div>
+    <div class="center"><a href="#work" data-nav="work"><img class="logo" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/test.png?raw=true" alt="Logo"/></a></div>
+    <div class="right"><div class="hamburger" id="hamburger"><span></span><span></span><span></span></div></div>
+  </div>
+
   <div class="layout">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <a href="#works" data-nav="works" class="profile-photo">
+      <a href="#work" data-nav="work" class="profile-photo">
         <img src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/download20250903083827.png?raw=true" alt="Profile photo" />
       </a>
-      <a href="#works" data-nav="works" class="profile-name">
+      <a href="#work" data-nav="work" class="profile-name">
         <h1>Kim ChaeYeon</h1>
       </a>
       <p>3D Artist<br/>@4Chloey</p>
       <nav>
-        <a href="#works" data-nav="works">WORKS</a>
+        <a href="#work" data-nav="work">WORK</a>
         <a href="#miyu" data-nav="miyu">MIYU</a>
         <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
         <a href="#diving" data-nav="diving">Diving Deeper</a>
@@ -93,15 +119,9 @@
       </nav>
     </aside>
 
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-      <div class="font-bold">4Chloey</div>
-      <div class="hamburger" id="hamburger">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
+    <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
-      <a href="#works" data-nav="works">WORKS</a>
+      <a href="#work" data-nav="work">WORK</a>
       <a href="#miyu" data-nav="miyu">MIYU</a>
       <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
       <a href="#diving" data-nav="diving">Diving Deeper</a>
@@ -110,24 +130,24 @@
 
     <!-- Main Content -->
     <main class="content">
-      <!-- Works grid -->
-      <section id="works">
-        <h2 class="section-title">WORKS</h2>
-        <div class="grid-container">
+      <!-- Work grid -->
+      <section id="work">
+        <h2 class="section-title">WORK</h2>
+        <div class="grid">
           <button class="grid-card" data-open="miyu">
-            <img class="thumb" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu3_KimChaeYeon.png?raw=true" alt="MIYU thumbnail" />
+            <img class="thumb" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu3_KimChaeYeon.png?raw=true" alt="MIYU thumbnail" />
             <div class="p-3"><div class="font-bold">MIYU</div></div>
           </button>
           <button class="grid-card" data-open="Wriothesley">
-            <img class="thumb" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Wriothesley_KimChaeYeon.png?raw=true" alt="Wriothesley thumbnail" />
+            <img class="thumb" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley2_KimChaeYeon.png?raw=true" alt="Wriothesley thumbnail" />
             <div class="p-3"><div class="font-bold">Wriothesley</div></div>
           </button>
           <button class="grid-card" data-open="diving">
-            <img class="thumb" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Divingdeeper_KimChaeYeon.jpg?raw=true" alt="Diving Deeper thumbnail" />
+            <img class="thumb" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_KimChaeYeon.jpg?raw=true" alt="Diving Deeper thumbnail" />
             <div class="p-3"><div class="font-bold">Diving Deeper</div></div>
           </button>
           <button class="grid-card" data-open="miyu-3">
-            <img class="thumb" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png?raw=true" alt="MIYU #3 thumbnail" />
+            <img class="thumb" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png" alt="MIYU #3 thumbnail" />
             <div class="p-3"><div class="font-bold">MIYU #3</div></div>
           </button>
         </div>
@@ -135,33 +155,71 @@
 
       <!-- Projects -->
       <section id="miyu" class="mt-10" data-project>
-        <button class="back-btn" data-back>← Back to WORKS</button>
+        <button class="back-btn" data-back>← Back to WORK</button>
         <h2 class="section-title">MIYU</h2>
-        <div class="reveal"><img loading="lazy" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu2_KimChaeYeon.png?raw=true" class="project-img fade-img" alt="MIYU 2"/></div>
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu3_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu2_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/MiyuWire_A_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/MiyuWire_P_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/MiyuWire_Face_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_Maps_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_Unity_KimChaeYeon.png?raw=true" />
+      </section>
+
+      <section id="Wriothesley" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">Wriothesley</h2>
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley3_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley2_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/WriothesleyWire_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley_Maps_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley_Unity_KimChaeYeon.png?raw=true" />
+      </section>
+
+      <section id="diving" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">Diving Deeper</h2>
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_KimChaeYeon.jpg?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper2_KimChaeYeon.jpg?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper3_KimChaeYeon.jpg?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_Wire_KimChaeYeon.jpg?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_ZBrush_KimChaeYeon.jpg?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_pre_KimChaeYeon.jpg?raw=true" />
+      </section>
+      </section>
+
+      <section id="miyu-3" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">MIYU #3</h2>
+        <img class="project-img fade-img" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png" />
+        <img class="project-img fade-img" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png" />
+        <img class="project-img fade-img" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png" />
       </section>
     </main>
   </div>
 
   <script>
     // lazy load fade-in
-    document.querySelectorAll('img.fade-img').forEach(img=>{ 
-      if(img.complete) img.classList.add('loaded'); 
-      img.addEventListener('load', ()=> img.classList.add('loaded')); 
+    document.querySelectorAll('img.fade-img').forEach(img=>{
+      if(img.complete) img.classList.add('loaded');
+      img.addEventListener('load', ()=> img.classList.add('loaded'));
     });
 
     const projects=document.querySelectorAll('[data-project]');
-    const works=document.getElementById('works');
+    const work=document.getElementById('work');
 
     function openProject(id){
-      works.style.display='none';
+      work.style.display='none';
       projects.forEach(sec=>sec.style.display='none');
       const target=document.getElementById(id);
-      if(target){target.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}  
+      if(target){target.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
     }
 
-    function backToWorks(){
+    function backToWork(){
       projects.forEach(sec=>sec.style.display='none');
-      works.style.display='block';
+      work.style.display='block';
       window.scrollTo({top:0,behavior:'smooth'});
     }
 
@@ -169,26 +227,24 @@
       const openBtn=e.target.closest('[data-open]');
       const backBtn=e.target.closest('[data-back]');
       const navLink=e.target.closest('[data-nav]');
-      if(openBtn){openProject(openBtn.dataset.open);} 
-      if(backBtn){backToWorks();}
+      if(openBtn){openProject(openBtn.dataset.open);}
+      if(backBtn){backToWork();}
       if(navLink){
         e.preventDefault();
         const id=navLink.dataset.nav;
-        if(id==='works'){backToWorks();}
-        else{openProject(id);} 
-        document.getElementById('mobileMenu').style.display='none';
+        if(id==='work'){backToWork();}
+        else{openProject(id);}
+        closeMobileMenu();
       }
     });
 
     // mobile menu toggle
     const hamburger=document.getElementById('hamburger');
     const mobileMenu=document.getElementById('mobileMenu');
+    function openMobileMenu(){mobileMenu.style.display='block';document.body.style.overflow='hidden'}
+    function closeMobileMenu(){mobileMenu.style.display='none';document.body.style.overflow=''}
     hamburger.addEventListener('click',()=>{
-      if(mobileMenu.style.display==='block'){
-        mobileMenu.style.display='none';
-      }else{
-        mobileMenu.style.display='block';
-      }
+      if(mobileMenu.style.display==='block') closeMobileMenu(); else openMobileMenu();
     });
   </script>
 </body>
