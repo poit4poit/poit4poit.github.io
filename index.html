@@ -48,8 +48,23 @@
     .profile-name{display:inline-block;transition:color .25s ease}
     .profile-name:hover{color:#a2cffe;cursor:pointer}
     .sidebar img{border-radius:8px;width:90px;height:90px;object-fit:contain;margin:0 auto 10px;transition:transform .25s ease}
-    .sidebar h1{font-weight:800;font-size:1.2rem;margin:0 0 .5rem 0;line-height:1;} /* line-height 1로 베이스라인 고정 */
-    .sidebar p{color:#555;margin-bottom:1.2rem;font-size:.85rem;line-height:1.4}
+    .sidebar h1{font-weight:800;font-size:1.2rem;margin:0 0 .5rem 0;line-height:1;}
+    .sidebar p{color:#555;margin-bottom:.8rem;font-size:.85rem;line-height:1.4}
+
+    /* --- 소셜 아이콘 (모두 동일 크기) --- */
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 8px 0 16px;
+    }
+    .social-icons img {
+      width: 26px;   /* 원하는 크기 (24~32px 사이 추천) */
+      height: 26px;
+      object-fit: contain; /* 로고 비율 유지 */
+      display: block;
+    }
+
     .sidebar nav a{display:block;font-size:.9rem;color:#222;margin:.35rem 0;padding:.15rem 0;transition:color .2s}
     .sidebar nav a:hover{color:#000;text-decoration:underline}
 
@@ -58,13 +73,12 @@
     .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
     .grid-card:hover{box-shadow:0 3px 6px rgba(0,0,0,.12);transform:translateY(-2px)}
 
-    /* --- 카드 크기 축소(3번째 카드 느낌으로 통일) --- */
-    /* 고정 높이 기반으로 동일 인상 유지 */
+    /* --- 카드 크기 --- */
     .thumb{width:100%;height:280px;object-fit:cover;display:block}
     @media (max-width:1024px){ .thumb{height:160px} }
     @media (max-width:640px){ .thumb{height:140px} }
 
-    .grid{display:grid;gap:2rem} /* 살짝 간격도 줄임 */
+    .grid{display:grid;gap:2rem}
     @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
 
@@ -120,6 +134,23 @@
         </a>
         <p>3D Artist<br/>@4Chloey</p>
       </div>
+
+      <!-- 소셜 아이콘 -->
+      <div class="social-icons" aria-label="Social links">
+        <a href="https://www.instagram.com/4Chloey" target="_blank" rel="noopener">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(1).png?raw=true" alt="Instagram" />
+        </a>
+        <a href="https://x.com/4Chloey" target="_blank" rel="noopener">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(2).png?raw=true" alt="X" />
+        </a>
+        <a href="https://www.youtube.com/@4Chloey" target="_blank" rel="noopener">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(3).png?raw=true" alt="YouTube" />
+        </a>
+        <a href="https://www.artstation.com/Chloey" target="_blank" rel="noopener">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(4).png?raw=true" alt="ArtStation" />
+        </a>
+      </div>
+
       <nav>
         <a href="#work" data-nav="work">WORK</a>
         <a href="#miyu" data-nav="miyu">MIYU</a>
@@ -128,15 +159,6 @@
         <a href="#miyu-3" data-nav="miyu-3">MIYU #3</a>
       </nav>
     </aside>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#work" data-nav="work">WORK</a>
-      <a href="#miyu" data-nav="miyu">MIYU</a>
-      <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
-      <a href="#diving" data-nav="diving">Diving Deeper</a>
-      <a href="#miyu-3" data-nav="miyu-3">MIYU #3</a>
-    </div>
 
     <!-- Main Content -->
     <main class="content">
@@ -161,50 +183,6 @@
             <div class="p-3"><div class="font-bold text-sm">MIYU #3</div></div>
           </button>
         </div>
-      </section>
-
-      <!-- Projects -->
-      <section id="miyu" class="mt-10" data-project>
-        <button class="back-btn" data-back>← Back to WORK</button>
-        <h2 class="section-title">MIYU</h2>
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu3_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu2_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/MiyuWire_A_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/MiyuWire_P_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/MiyuWire_Face_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_Maps_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Miyu_Unity_KimChaeYeon.png?raw=true" />
-      </section>
-
-      <section id="Wriothesley" class="mt-10" data-project>
-        <button class="back-btn" data-back>← Back to WORK</button>
-        <h2 class="section-title">Wriothesley</h2>
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley3_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley2_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/WriothesleyWire_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley_Maps_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Wriothesley_Unity_KimChaeYeon.png?raw=true" />
-      </section>
-
-      <section id="diving" class="mt-10" data-project>
-        <button class="back-btn" data-back>← Back to WORK</button>
-        <h2 class="section-title">Diving Deeper</h2>
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper2_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper3_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_Wire_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_ZBrush_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Divingdeeper_pre_KimChaeYeon.jpg?raw=true" />
-      </section>
-
-      <section id="miyu-3" class="mt-10" data-project>
-        <button class="back-btn" data-back>← Back to WORK</button>
-        <h2 class="section-title">MIYU #3</h2>
-        <img class="project-img fade-img" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png" />
-        <img class="project-img fade-img" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png" />
-        <img class="project-img fade-img" src="https://raw.githubusercontent.com/4Chloey/4Chloey.github.io/main/Miyu_KimChaeYeon.png" />
       </section>
     </main>
   </div>
