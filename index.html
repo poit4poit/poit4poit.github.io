@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="4Chloey — 3D 포트폴리오, UTS/URP/HDRP, 하드서페이스·캐릭터 모델링." />
   <link rel="canonical" href="https://4Chloey.github.io/" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image/test.png?raw=true" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="4Chloey" />
   <meta property="og:title" content="4Chloey | 3D Artist" />
   <meta property="og:description" content="4Chloey 포트폴리오" />
   <meta property="og:url" content="https://4Chloey.github.io/" />
   <meta property="og:image" content="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image/test.png?raw=true" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:card" content="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image/test.png?raw=true" />
   <meta name="twitter:site" content="@4Chloey" />
 
   <!-- Fonts & Tailwind -->
@@ -41,7 +41,7 @@
     .layout{display:flex;min-height:100vh;background:#fafafa;padding-top:56px}
     .sidebar{width:240px;min-height:calc(100vh - 56px);position:fixed;top:56px;left:0;background:#fff;border-right:1px solid #e5e7eb;padding:1.5rem;overflow-y:auto;text-align:center;z-index:50}
 
-    /* --- 프로필 정렬 개선 --- */
+    /* --- 사이드바 프로필 --- */
     .profile{display:flex;flex-direction:column;align-items:center;justify-content:center}
     .profile-photo{display:inline-block;transition:transform .25s ease}
     .profile-photo:hover img{transform:scale(1.05)}
@@ -51,19 +51,9 @@
     .sidebar h1{font-weight:800;font-size:1.2rem;margin:0 0 .5rem 0;line-height:1;}
     .sidebar p{color:#555;margin-bottom:.8rem;font-size:.85rem;line-height:1.4}
 
-    /* --- 소셜 아이콘 --- */
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin: 8px 0 16px;
-    }
-    .social-icons img {
-      width: 26px;
-      height: 26px;
-      object-fit: contain;
-      display: block;
-    }
+    /* --- 소셜 아이콘 (사이드바) --- */
+    .social-icons {display:flex;justify-content:center;gap:12px;margin:8px 0 16px;}
+    .social-icons img {width:26px;height:26px;object-fit:contain;display:block;}
 
     .sidebar nav a{display:block;font-size:.9rem;color:#222;margin:.35rem 0;padding:.15rem 0;transition:color .2s}
     .sidebar nav a:hover{color:#000;text-decoration:underline}
@@ -96,19 +86,43 @@
     .project-img{width:100%;height:auto;object-fit:contain;border-radius:6px;margin-bottom:1rem}
 
     /* ===== Mobile ===== */
-    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);z-index:65;padding:1rem}
-    .mobile-menu a{display:block;padding:.7rem 0;color:#222;font-weight:700}
+    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);z-index:65;padding:1.5rem;overflow-y:auto}
+    .mobile-menu a{display:block;padding:.7rem 0;color:#222;font-weight:700;text-align:center}
+
+    /* 모바일 메뉴 내부 */
+    .mm-inner{max-width:520px;margin:0 auto}
+    .mm-profile{display:flex;flex-direction:column;align-items:center;margin-bottom:1rem}
+    .mm-avatar{width:80px;height:80px;border-radius:8px;object-fit:contain;margin-bottom:.5rem}
+    .mm-name{font-weight:800;font-size:1.1rem}
+    .mm-role{font-size:.85rem;color:#555}
+    .mm-social{display:flex;justify-content:center;gap:14px;margin:1rem 0}
+    .mm-social img{width:28px;height:28px;display:block}
+
+    /* ✅ 모바일 메인 히어로(배경/그림자 제거) */
+    .mobile-hero{
+      display:none;
+      margin:0 auto 1rem;
+      max-width:560px;
+      text-align:center;
+    }
+    .mh-avatar{width:72px;height:72px;border-radius:8px;object-fit:contain;margin:0 auto 8px}
+    .mh-name{font-weight:800}
+    .mh-role{font-size:.9rem;color:#555;margin-top:2px}
+    .mh-social{display:flex;justify-content:center;gap:14px;margin-top:10px}
+    .mh-social img{width:24px;height:24px;display:block}
 
     @media(max-width:768px){
       .sidebar{display:none}
       .content{margin-left:0;padding:1.25rem;padding-top:76px}
       .brand{font-size:1rem}
       .hamburger{display:flex}
+      .mobile-hero{display:block}
     }
     @media(min-width:769px){
       .hamburger{display:none}
     }
 
+    /* 요청: WORK 글자/링크 노출 제거 */
     .sidebar nav a[data-nav="work"] { display: none !important; }
     #work .section-title { display: none !important; }
   </style>
@@ -117,8 +131,55 @@
   <!-- Top Glass Bar -->
   <div class="topbar">
     <div class="left"><a class="brand" href="#work" data-nav="work">4Chloey</a></div>
-    <div class="center"><a href="#work" data-nav="work"><img class="logo" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image/test.png?raw=true" alt="Logo"/></a></div>
-    <div class="right"><div class="hamburger" id="hamburger"><span></span><span></span><span></span></div></div>
+    <div class="center">
+      <a href="#work" data-nav="work">
+        <img class="logo" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image/test.png?raw=true" alt="Logo"/>
+      </a>
+    </div>
+    <div class="right">
+      <div class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ 모바일 메뉴 -->
+  <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="mm-inner">
+      <!-- 프로필 -->
+      <div class="mm-profile">
+        <img class="mm-avatar" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image/download20250903083827.png?raw=true" alt="Profile photo">
+        <div class="mm-name">4Chloey</div>
+        <div class="mh-role">3D Artist</div>
+        <div class="mh-email">coraline0120@gmail.com</div>
+
+      </div>
+
+      <!-- 소셜 -->
+      <div class="mm-social" aria-label="Social links">
+        <a href="https://www.instagram.com/4Chloey" target="_blank" aria-label="Instagram">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(1).png?raw=true" alt="Instagram">
+        </a>
+        <a href="https://x.com/4Chloey" target="_blank" aria-label="X">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(2).png?raw=true" alt="X">
+        </a>
+        <a href="https://www.youtube.com/@4Chloey" target="_blank" aria-label="YouTube">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(3).png?raw=true" alt="YouTube">
+        </a>
+        <a href="https://www.artstation.com/4Chloey" target="_blank" aria-label="ArtStation">
+          <img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(4).png?raw=true" alt="ArtStation">
+        </a>
+      </div>
+
+      <!-- 내비게이션 -->
+      <nav class="mm-nav">
+        <a href="#work" data-nav="work">WORK</a>
+        <a href="#miyu" data-nav="miyu">MIYU</a>
+        <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
+        <a href="#diving" data-nav="diving">Diving Deeper</a>
+        <a href="#miyu-3" data-nav="miyu-3">MIYU #3</a>
+      </nav>
+    </div>
   </div>
 
   <div class="layout">
@@ -131,7 +192,7 @@
         <a href="#work" data-nav="work" class="profile-name">
           <h1>4Chloey</h1>
         </a>
-        <p>3D Artist<br/>@4Chloey</p>
+        <p>3D Artist<br/>coraline0120@gmail.com</p>
       </div>
 
       <!-- 소셜 아이콘 -->
@@ -153,6 +214,20 @@
 
     <!-- Main Content -->
     <main class="content">
+      <!-- ✅ 모바일 메인 히어로 (모바일에서만 보임, 배경/그림자 없음) -->
+      <section class="mobile-hero" aria-label="Profile">
+        <img class="mh-avatar" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image/download20250903083827.png?raw=true" alt="Profile photo">
+        <div class="mh-name">4Chloey</div>
+        <div class="mh-role">3D Artist</div>
+        <div class="mh-email">coraline0120@gmail.com</div>
+        <div class="mh-social" aria-label="Social links">
+          <a href="https://www.instagram.com/4Chloey" target="_blank"><img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(1).png?raw=true" alt="Instagram"></a>
+          <a href="https://x.com/4Chloey" target="_blank"><img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(2).png?raw=true" alt="X"></a>
+          <a href="https://www.youtube.com/@4Chloey" target="_blank"><img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(3).png?raw=true" alt="YouTube"></a>
+          <a href="https://www.artstation.com/4Chloey" target="_blank"><img src="https://github.com/4Chloey/4Chloey.github.io/blob/main/logo/Logo%20(4).png?raw=true" alt="ArtStation"></a>
+        </div>
+      </section>
+
       <!-- Work grid -->
       <section id="work">
         <h2 class="section-title">WORK</h2>
@@ -180,56 +255,58 @@
       <section id="miyu" class="mt-10" data-project>
         <button class="back-btn" data-back>← Back to WORK</button>
         <h2 class="section-title">MIYU</h2>
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu3_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu2_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu4.png?raw=true" src="Image_Miyu/MiyuWire_A_KimChaeYeon.png" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/MiyuWire_A_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/MiyuWire_P_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/MiyuWire_Face_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu_Maps_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu_Unity_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu3_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu2_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu4.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/MiyuWire_A_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/MiyuWire_P_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/MiyuWire_Face_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu_Maps_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Miyu/Miyu_Unity_KimChaeYeon.png?raw=true" alt="">
       </section>
 
       <!-- Project Wriothesley -->
       <section id="Wriothesley" class="mt-10" data-project>
         <button class="back-btn" data-back>← Back to WORK</button>
         <h2 class="section-title">Wriothesley</h2>
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley3_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley2_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/WriothesleyWire_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley_Maps_KimChaeYeon.png?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley_Unity_KimChaeYeon.png?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley3_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley2_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/WriothesleyWire_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley_Maps_KimChaeYeon.png?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_Wriothesley/Wriothesley_Unity_KimChaeYeon.png?raw=true" alt="">
       </section>
 
       <!-- Project Diving Deeper -->
       <section id="diving" class="mt-10" data-project>
         <button class="back-btn" data-back>← Back to WORK</button>
         <h2 class="section-title">Diving Deeper</h2>
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper2_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper3_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_Wire_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_ZBrush_KimChaeYeon.jpg?raw=true" />
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_pre_KimChaeYeon.jpg?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper2_KimChaeYeon.jpg?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper3_KimChaeYeon.jpg?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_Wire_KimChaeYeon.jpg?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_ZBrush_KimChaeYeon.jpg?raw=true" alt="">
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Image_DivingDeeper/Divingdeeper_pre_KimChaeYeon.jpg?raw=true" alt="">
       </section>
 
       <!-- Project MIYU #3 -->
       <section id="miyu-3" class="mt-10" data-project>
         <button class="back-btn" data-back>← Back to WORK</button>
         <h2 class="section-title">MIYU #3</h2>
-        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Main.gif?raw=true" />
+        <img class="project-img fade-img" src="https://github.com/4Chloey/4Chloey.github.io/blob/main/Main.gif?raw=true" alt="">
       </section>
     </main>
   </div>
 
   <script>
+    // 페이드인
     document.querySelectorAll('img.fade-img').forEach(img=>{
       if(img.complete) img.classList.add('loaded');
       img.addEventListener('load', ()=> img.classList.add('loaded'));
     });
 
+    // 섹션 토글
     const projects=document.querySelectorAll('[data-project]');
     const work=document.getElementById('work');
 
@@ -239,13 +316,13 @@
       const target=document.getElementById(id);
       if(target){target.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
     }
-
     function backToWork(){
       projects.forEach(sec=>sec.style.display='none');
       work.style.display='block';
       window.scrollTo({top:0,behavior:'smooth'});
     }
 
+    // 전역 클릭: 카드 열기/뒤로/내비 링크
     document.addEventListener('click',e=>{
       const openBtn=e.target.closest('[data-open]');
       const backBtn=e.target.closest('[data-back]');
@@ -255,18 +332,47 @@
       if(navLink){
         e.preventDefault();
         const id=navLink.dataset.nav;
-        if(id==='work'){backToWork();}
-        else{openProject(id);}
+        if(id==='work'){backToWork();} else {openProject(id);}
         closeMobileMenu();
       }
     });
 
+    // 모바일 메뉴 제어
     const hamburger=document.getElementById('hamburger');
     const mobileMenu=document.getElementById('mobileMenu');
-    function openMobileMenu(){mobileMenu.style.display='block';document.body.style.overflow='hidden'}
-    function closeMobileMenu(){mobileMenu.style.display='none';document.body.style.overflow=''}
-    hamburger.addEventListener('click',()=>{
-      if(mobileMenu.style.display==='block') closeMobileMenu(); else openMobileMenu();
+
+    function openMobileMenu(){
+      if(!mobileMenu) return;
+      mobileMenu.style.display='block';
+      mobileMenu.setAttribute('aria-hidden','false');
+      if(hamburger) hamburger.setAttribute('aria-expanded','true');
+      document.body.style.overflow='hidden';
+    }
+    function closeMobileMenu(){
+      if(!mobileMenu) return;
+      mobileMenu.style.display='none';
+      mobileMenu.setAttribute('aria-hidden','true');
+      if(hamburger) hamburger.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    }
+
+    if(hamburger){
+      hamburger.addEventListener('click',()=>{
+        if(!mobileMenu) return;
+        const isOpen = mobileMenu.style.display==='block';
+        if(isOpen) closeMobileMenu(); else openMobileMenu();
+      });
+    }
+
+    // ESC 닫기
+    document.addEventListener('keydown',(e)=>{
+      if(e.key==='Escape') closeMobileMenu();
+    });
+
+    // 배경 클릭 닫기 (mm-inner 바깥)
+    mobileMenu?.addEventListener('click',(e)=>{
+      const inner = e.target.closest('.mm-inner');
+      if(!inner) closeMobileMenu();
     });
   </script>
 </body>
