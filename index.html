@@ -20,6 +20,8 @@
   <meta property="og:url" content="https://poit4poit.github.io/" />
   <meta property="og:image" content="https://poit4poit.github.io/Image/test.png" />
 
+  <!-- 트위터 카드 제거됨 -->
+
   <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -55,7 +57,7 @@
     .sidebar h1{font-weight:800;font-size:1.2rem;margin:0 0 .5rem 0;line-height:1;}
     .sidebar p{color:#555;margin-bottom:.8rem;font-size:.85rem;line-height:1.4}
 
-    /* --- 소셜 아이콘 (사이드바) --- */
+    /* --- 소셜 아이콘 (YouTube 제거) --- */
     .social-icons {display:flex;justify-content:center;gap:12px;margin:8px 0 16px;}
     .social-icons img {width:26px;height:26px;object-fit:contain;display:block;}
 
@@ -64,22 +66,19 @@
 
     .content{margin-left:240px;flex:1;padding:2rem 6rem;padding-top:32px}
 
+    /* ===== 카드 ===== */
     .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
     .grid-card:hover{box-shadow:0 3px 6px rgba(0,0,0,.12);transform:translateY(-2px)}
 
-    /* --- 썸네일 공통 --- */
+    /* --- 썸네일: 모바일 커버, 데스크톱 원본비율 유지 --- */
     .thumb{width:100%;display:block}
-
-    /* 기본(모바일 우선): 플렉시블, 잘림 허용 */
-    .thumb{height:280px;object-fit:cover}
-    @media (max-width:1024px){ .thumb{height:160px} }
+    /* 기본(모바일 우선): 커버 */
+    .thumb{height:180px;object-fit:cover}
     @media (max-width:640px){ .thumb{height:140px} }
+    /* 데스크톱(햄버거 숨김): 원본 비율 유지, 잘림 없음 */
+    @media (min-width:769px){ .thumb{height:auto;object-fit:contain} }
 
-    /* 데스크톱(햄버거 숨김): 원본 비율 유지, 잘림 금지 */
-    @media (min-width:769px){
-      .thumb{height:auto;object-fit:contain}
-    }
-
+    /* 그리드: 원래 레이아웃(2→3열) */
     .grid{display:grid;gap:2rem}
     @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
@@ -106,11 +105,11 @@
     .mm-profile{display:flex;flex-direction:column;align-items:center;margin-bottom:1rem}
     .mm-avatar{width:80px;height:80px;border-radius:8px;object-fit:contain;margin-bottom:.5rem}
     .mm-name{font-weight:800;font-size:1.1rem}
-    .mm-role{font-size:.85rem;color:#555}
+    .mh-role{font-size:.85rem;color:#555}
     .mm-social{display:flex;justify-content:center;gap:14px;margin:1rem 0}
     .mm-social img{width:28px;height:28px;display:block}
 
-    /* ✅ 모바일 메인 히어로(배경/그림자 제거) */
+    /* ✅ 모바일 메인 히어로 */
     .mobile-hero{
       display:none;
       margin:0 auto 1rem;
@@ -167,7 +166,7 @@
         <div class="mh-email">coraline0120@gmail.com</div>
       </div>
 
-      <!-- 소셜 -->
+      <!-- 소셜 (YouTube 제거) -->
       <div class="mm-social" aria-label="Social links">
         <a href="https://www.instagram.com/poit4poit" target="_blank" aria-label="Instagram">
           <img src="/logo/Logo (1).png" alt="Instagram">
@@ -235,25 +234,21 @@
         </div>
       </section>
 
-      <!-- Work grid -->
+      <!-- Work grid (제목 제거, 원래 레이아웃 유지) -->
       <section id="work">
         <h2 class="section-title">WORK</h2>
         <div class="grid">
-          <button class="grid-card" data-open="miyu">
+          <button class="grid-card" data-open="miyu" aria-label="Open MIYU">
             <img class="thumb" src="/Image_Miyu/Miyu3_KimChaeYeon.png" alt="MIYU thumbnail" />
-            <div class="p-3"><div class="font-bold text-sm">MIYU</div></div>
           </button>
-          <button class="grid-card" data-open="Wriothesley">
+          <button class="grid-card" data-open="Wriothesley" aria-label="Open Wriothesley">
             <img class="thumb" src="/Image_Wriothesley/Wriothesley3_KimChaeYeon.png" alt="Wriothesley thumbnail" />
-            <div class="p-3"><div class="font-bold text-sm">Wriothesley</div></div>
           </button>
-          <button class="grid-card" data-open="diving">
+          <button class="grid-card" data-open="diving" aria-label="Open Diving Deeper">
             <img class="thumb" src="/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg" alt="Diving Deeper thumbnail" />
-            <div class="p-3"><div class="font-bold text-sm">Diving Deeper</div></div>
           </button>
-          <button class="grid-card" data-open="miyu-3">
+          <button class="grid-card" data-open="miyu-3" aria-label="Open MIYU #3">
             <img class="thumb" src="/Main.gif" alt="MIYU #3 thumbnail" />
-            <div class="p-3"><div class="font-bold text-sm">MIYU #3</div></div>
           </button>
         </div>
       </section>
@@ -317,7 +312,7 @@
     const projects = document.querySelectorAll('[data-project]');
     const work = document.getElementById('work');
 
-    // 화면 표시만 담당
+    // 화면 표시
     function showView(view){
       if(!view || view === 'work'){
         projects.forEach(sec=>sec.style.display='none');
@@ -332,45 +327,33 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // URL/히스토리 갱신
+    // URL/히스토리
     function navigateTo(view, { replace=false } = {}){
       const hash = view && view !== 'work' ? '#' + view : '#work';
-      if(replace){
-        history.replaceState({ view }, '', hash);
-      }else{
-        history.pushState({ view }, '', hash);
-      }
+      if(replace){ history.replaceState({ view }, '', hash); }
+      else{ history.pushState({ view }, '', hash); }
       showView(view);
     }
 
-    // 초기 진입 처리
+    // 초기 진입
     const initialView = (location.hash || '#work').replace('#','');
     navigateTo(initialView, { replace:true });
 
-    // 브라우저 뒤/앞 버튼
+    // 뒤/앞 버튼
     window.addEventListener('popstate', (e)=>{
       const viewFromState = e.state?.view;
       const viewFromHash = (location.hash || '#work').replace('#','');
       showView(viewFromState ?? viewFromHash ?? 'work');
     });
 
-    // 전역 클릭: 카드/뒤로/내비
+    // 전역 클릭
     document.addEventListener('click', (e)=>{
       const openBtn = e.target.closest('[data-open]');
       const backBtn = e.target.closest('[data-back]');
       const navLink = e.target.closest('[data-nav]');
 
-      if(openBtn){
-        const id = openBtn.dataset.open;
-        if(id){ navigateTo(id); }
-        return;
-      }
-
-      if(backBtn){
-        history.back(); // 진짜 뒤로가기
-        return;
-      }
-
+      if(openBtn){ const id = openBtn.dataset.open; if(id){ navigateTo(id); } return; }
+      if(backBtn){ history.back(); return; }
       if(navLink){
         e.preventDefault();
         const id = navLink.dataset.nav;
@@ -380,7 +363,7 @@
       }
     });
 
-    // ===== 모바일 메뉴 제어 =====
+    // 모바일 메뉴
     const hamburger=document.getElementById('hamburger');
     const mobileMenu=document.getElementById('mobileMenu');
 
@@ -412,7 +395,7 @@
       if(e.key==='Escape') closeMobileMenu();
     });
 
-    // 배경 클릭 닫기 (mm-inner 바깥)
+    // 배경 클릭 닫기
     mobileMenu?.addEventListener('click',(e)=>{
       const inner = e.target.closest('.mm-inner');
       if(!inner) closeMobileMenu();
