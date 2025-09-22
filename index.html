@@ -67,10 +67,18 @@
     .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
     .grid-card:hover{box-shadow:0 3px 6px rgba(0,0,0,.12);transform:translateY(-2px)}
 
-    /* --- 카드 크기 --- */
-    .thumb{width:100%;height:280px;object-fit:cover;display:block}
+    /* --- 썸네일 공통 --- */
+    .thumb{width:100%;display:block}
+
+    /* 기본(모바일 우선): 플렉시블, 잘림 허용 */
+    .thumb{height:280px;object-fit:cover}
     @media (max-width:1024px){ .thumb{height:160px} }
     @media (max-width:640px){ .thumb{height:140px} }
+
+    /* 데스크톱(햄버거 숨김): 원본 비율 유지, 잘림 금지 */
+    @media (min-width:769px){
+      .thumb{height:auto;object-fit:contain}
+    }
 
     .grid{display:grid;gap:2rem}
     @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
@@ -159,7 +167,7 @@
         <div class="mh-email">coraline0120@gmail.com</div>
       </div>
 
-      <!-- 소셜 (YouTube 제거) -->
+      <!-- 소셜 -->
       <div class="mm-social" aria-label="Social links">
         <a href="https://www.instagram.com/poit4poit" target="_blank" aria-label="Instagram">
           <img src="/logo/Logo (1).png" alt="Instagram">
@@ -196,7 +204,7 @@
         <p>3D Artist<br/>coraline0120@gmail.com</p>
       </div>
 
-      <!-- 소셜 아이콘 (YouTube 제거) -->
+      <!-- 소셜 아이콘 -->
       <div class="social-icons" aria-label="Social links">
         <a href="https://www.instagram.com/poit4poit" target="_blank"><img src="/logo/Logo (1).png" alt="Instagram" /></a>
         <a href="https://x.com/poit4poit" target="_blank"><img src="/logo/Logo (2).png" alt="X" /></a>
@@ -214,7 +222,7 @@
 
     <!-- Main Content -->
     <main class="content">
-      <!-- ✅ 모바일 메인 히어로 (모바일에서만 보임, YouTube 제거) -->
+      <!-- ✅ 모바일 메인 히어로 -->
       <section class="mobile-hero" aria-label="Profile">
         <img class="mh-avatar" src="/Image/download20250903083827.png" alt="Profile photo">
         <div class="mh-name">poit4poit</div>
