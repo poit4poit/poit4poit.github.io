@@ -225,7 +225,7 @@
 
     <!-- Main Content -->
     <main class="content">
-      <!-- ✅ 모바일 메인 히어로 (모바일에서만 보임, 배경/그림자 없음) -->
+      <!-- ✅ 모바일 메인 히어로 (모바일에서만 보임) -->
       <section class="mobile-hero" aria-label="Profile">
         <img class="mh-avatar" src="/Image/download20250903083827.png" alt="Profile photo">
         <div class="mh-name">poit4poit</div>
@@ -317,38 +317,74 @@
       img.addEventListener('load', ()=> img.classList.add('loaded'));
     });
 
-    // 섹션 토글
-    const projects=document.querySelectorAll('[data-project]');
-    const work=document.getElementById('work');
+    // 섹션 DOM 캐시
+    const projects = document.querySelectorAll('[data-project]');
+    const work = document.getElementById('work');
 
-    function openProject(id){
-      work.style.display='none';
-      projects.forEach(sec=>sec.style.display='none');
-      const target=document.getElementById(id);
-      if(target){target.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
-    }
-    function backToWork(){
-      projects.forEach(sec=>sec.style.display='none');
-      work.style.display='block';
-      window.scrollTo({top:0,behavior:'smooth'});
+    // 화면 표시만 담당
+    function showView(view){
+      if(!view || view === 'work'){
+        projects.forEach(sec=>sec.style.display='none');
+        work.style.display='block';
+      }else{
+        work.style.display='none';
+        projects.forEach(sec=>sec.style.display='none');
+        const target = document.getElementById(view);
+        if(target){ target.style.display='block'; }
+        else { work.style.display='block'; }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 전역 클릭: 카드 열기/뒤로/내비 링크
-    document.addEventListener('click',e=>{
-      const openBtn=e.target.closest('[data-open]');
-      const backBtn=e.target.closest('[data-back]');
-      const navLink=e.target.closest('[data-nav]');
-      if(openBtn){openProject(openBtn.dataset.open);}
-      if(backBtn){backToWork();}
+    // URL/히스토리 갱신
+    function navigateTo(view, { replace=false } = {}){
+      const hash = view && view !== 'work' ? '#' + view : '#work';
+      if(replace){
+        history.replaceState({ view }, '', hash);
+      }else{
+        history.pushState({ view }, '', hash);
+      }
+      showView(view);
+    }
+
+    // 초기 진입 처리
+    const initialView = (location.hash || '#work').replace('#','');
+    navigateTo(initialView, { replace:true });
+
+    // 브라우저 뒤/앞 버튼
+    window.addEventListener('popstate', (e)=>{
+      const viewFromState = e.state?.view;
+      const viewFromHash = (location.hash || '#work').replace('#','');
+      showView(viewFromState ?? viewFromHash ?? 'work');
+    });
+
+    // 전역 클릭: 카드/뒤로/내비
+    document.addEventListener('click', (e)=>{
+      const openBtn = e.target.closest('[data-open]');
+      const backBtn = e.target.closest('[data-back]');
+      const navLink = e.target.closest('[data-nav]');
+
+      if(openBtn){
+        const id = openBtn.dataset.open;
+        if(id){ navigateTo(id); }
+        return;
+      }
+
+      if(backBtn){
+        history.back(); // 진짜 뒤로가기
+        return;
+      }
+
       if(navLink){
         e.preventDefault();
-        const id=navLink.dataset.nav;
-        if(id==='work'){backToWork();} else {openProject(id);}
+        const id = navLink.dataset.nav;
+        navigateTo(id || 'work');
         closeMobileMenu();
+        return;
       }
     });
 
-    // 모바일 메뉴 제어
+    // ===== 모바일 메뉴 제어 =====
     const hamburger=document.getElementById('hamburger');
     const mobileMenu=document.getElementById('mobileMenu');
 
