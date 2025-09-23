@@ -20,8 +20,6 @@
   <meta property="og:url" content="https://poit4poit.github.io/" />
   <meta property="og:image" content="https://poit4poit.github.io/Image/test.png" />
 
-  <!-- 트위터 카드 제거됨 -->
-
   <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
@@ -67,21 +65,22 @@
     .content{margin-left:240px;flex:1;padding:2rem 6rem;padding-top:32px}
 
     /* ===== 카드 ===== */
+    .grid{display:grid;gap:2rem}
+    @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+
     .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
     .grid-card:hover{box-shadow:0 3px 6px rgba(0,0,0,.12);transform:translateY(-2px)}
 
-    /* --- 썸네일: 모바일 커버, 데스크톱 원본비율 유지 --- */
+    /* --- 썸네일: 모바일 커버, 데스크톱 균일한 높이 + 비율 유지(크롭 없음) --- */
     .thumb{width:100%;display:block}
     /* 기본(모바일 우선): 커버 */
     .thumb{height:180px;object-fit:cover}
     @media (max-width:640px){ .thumb{height:140px} }
-    /* 데스크톱(햄버거 숨김): 원본 비율 유지, 잘림 없음 */
-    @media (min-width:769px){ .thumb{height:auto;object-fit:contain} }
-
-    /* 그리드: 원래 레이아웃(2→3열) */
-    .grid{display:grid;gap:2rem}
-    @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+    /* 데스크톱: 일정 높이 + contain (GIF 과대확대 방지) */
+    @media (min-width:769px){
+      .thumb{height:220px;object-fit:contain}
+    }
 
     [data-project]{display:none}
     [data-project].active{display:block}
@@ -100,7 +99,6 @@
     .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);z-index:65;padding:1.5rem;overflow-y:auto}
     .mobile-menu a{display:block;padding:.7rem 0;color:#222;font-weight:700;text-align:center}
 
-    /* 모바일 메뉴 내부 */
     .mm-inner{max-width:520px;margin:0 auto}
     .mm-profile{display:flex;flex-direction:column;align-items:center;margin-bottom:1rem}
     .mm-avatar{width:80px;height:80px;border-radius:8px;object-fit:contain;margin-bottom:.5rem}
@@ -110,12 +108,7 @@
     .mm-social img{width:28px;height:28px;display:block}
 
     /* ✅ 모바일 메인 히어로 */
-    .mobile-hero{
-      display:none;
-      margin:0 auto 1rem;
-      max-width:560px;
-      text-align:center;
-    }
+    .mobile-hero{display:none;margin:0 auto 1rem;max-width:560px;text-align:center}
     .mh-avatar{width:72px;height:72px;border-radius:8px;object-fit:contain;margin:0 auto 8px}
     .mh-name{font-weight:800}
     .mh-role{font-size:.9rem;color:#555;margin-top:2px}
@@ -158,7 +151,6 @@
   <!-- ✅ 모바일 메뉴 -->
   <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="mm-inner">
-      <!-- 프로필 -->
       <div class="mm-profile">
         <img class="mm-avatar" src="/Image/download20250903083827.png" alt="Profile photo">
         <div class="mm-name">poit4poit</div>
@@ -166,7 +158,6 @@
         <div class="mh-email">coraline0120@gmail.com</div>
       </div>
 
-      <!-- 소셜 (YouTube 제거) -->
       <div class="mm-social" aria-label="Social links">
         <a href="https://www.instagram.com/poit4poit" target="_blank" aria-label="Instagram">
           <img src="/logo/Logo (1).png" alt="Instagram">
@@ -179,13 +170,13 @@
         </a>
       </div>
 
-      <!-- 내비게이션 -->
       <nav class="mm-nav">
         <a href="#work" data-nav="work">WORK</a>
         <a href="#miyu" data-nav="miyu">MIYU</a>
         <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
         <a href="#diving" data-nav="diving">Diving Deeper</a>
-        <a href="#miyu-3" data-nav="miyu-3">MIYU #3</a>
+        <a href="#WTA" data-nav="WTA">Wave To Anchor</a>
+        <a href="#Axe" data-nav="Axe">Axe</a>
       </nav>
     </div>
   </div>
@@ -203,7 +194,6 @@
         <p>3D Artist<br/>coraline0120@gmail.com</p>
       </div>
 
-      <!-- 소셜 아이콘 -->
       <div class="social-icons" aria-label="Social links">
         <a href="https://www.instagram.com/poit4poit" target="_blank"><img src="/logo/Logo (1).png" alt="Instagram" /></a>
         <a href="https://x.com/poit4poit" target="_blank"><img src="/logo/Logo (2).png" alt="X" /></a>
@@ -214,7 +204,7 @@
         <a href="#miyu" data-nav="miyu">MIYU</a>
         <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
         <a href="#diving" data-nav="diving">Diving Deeper</a>
-        <a href="WTA" data-nav="WTA">WTA</a>
+        <a href="#WTA" data-nav="WTA">WTA</a>
         <a href="#Axe" data-nav="Axe">Axe</a>
       </nav>
     </aside>
@@ -234,24 +224,24 @@
         </div>
       </section>
 
-      <!-- Work grid (제목 제거, 원래 레이아웃 유지) -->
+      <!-- Work grid -->
       <section id="work">
         <h2 class="section-title">WORK</h2>
         <div class="grid">
           <button class="grid-card" data-open="miyu" aria-label="Open MIYU">
-            <img class="thumb" src="/Image_Miyu/Miyu3_KimChaeYeon.png" alt="MIYU thumbnail" />
+            <img class="thumb" src="/Image_Miyu/Miyu3_KimChaeYeon.png" alt="MIYU thumbnail" loading="lazy" />
           </button>
           <button class="grid-card" data-open="Wriothesley" aria-label="Open Wriothesley">
-            <img class="thumb" src="/Image_Wriothesley/Wriothesley3_KimChaeYeon.png" alt="Wriothesley thumbnail" />
+            <img class="thumb" src="/Image_Wriothesley/Wriothesley3_KimChaeYeon.png" alt="Wriothesley thumbnail" loading="lazy" />
           </button>
           <button class="grid-card" data-open="diving" aria-label="Open Diving Deeper">
-            <img class="thumb" src="/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg" alt="Diving Deeper thumbnail" />
+            <img class="thumb" src="/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg" alt="Diving Deeper thumbnail" loading="lazy" />
           </button>
-          <button class="grid-card" data-open="Wave To Anchor" aria-label="Wave To Anchor">
-            <img class="thumb" src="/Main.gif" alt="Wave To Anchor thumbnail" />
+          <button class="grid-card" data-open="WTA" aria-label="Open Wave To Anchor">
+            <img class="thumb" src="/Main.gif" alt="Wave To Anchor thumbnail" loading="lazy" />
           </button>
           <button class="grid-card" data-open="Axe" aria-label="Open Axe">
-            <img class="thumb" src="/Image_Axe/Axe_KimChaeYeon.gif" alt="Axe thumbnail" />
+            <img class="thumb" src="/Image_Axe/Axe_KimChaeYeon.gif" alt="Axe thumbnail" loading="lazy" />
           </button>
         </div>
       </section>
@@ -296,17 +286,16 @@
       </section>
 
       <!-- Project Wave To Anchor -->
-      <section id="miyu-3" class="mt-10" data-project>
+      <section id="WTA" class="mt-10" data-project>
         <button class="back-btn" data-back>← Back to WORK</button>
-        <h2 class="section-title">Project Wave To Anchor</h2>
+        <h2 class="section-title">Wave To Anchor</h2>
         <img class="project-img fade-img" src="/Main.gif" alt="">
       </section>
 
-      
       <!-- Project Axe -->
-      <section id="Aex" class="mt-10" data-project>
+      <section id="Axe" class="mt-10" data-project>
         <button class="back-btn" data-back>← Back to WORK</button>
-        <h2 class="section-title">Aex</h2>
+        <h2 class="section-title">Axe</h2>
         <img class="project-img fade-img" src="/Image_Axe/Axe_KimChaeYeon.gif" alt="">
         <img class="project-img fade-img" src="/Image_Axe/Axe_KimChaeYeon.jpg" alt="">
       </section>
@@ -324,7 +313,6 @@
     const projects = document.querySelectorAll('[data-project]');
     const work = document.getElementById('work');
 
-    // 화면 표시
     function showView(view){
       if(!view || view === 'work'){
         projects.forEach(sec=>sec.style.display='none');
@@ -339,7 +327,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // URL/히스토리
     function navigateTo(view, { replace=false } = {}){
       const hash = view && view !== 'work' ? '#' + view : '#work';
       if(replace){ history.replaceState({ view }, '', hash); }
