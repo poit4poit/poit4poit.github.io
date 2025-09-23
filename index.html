@@ -69,25 +69,18 @@
     @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
 
-    .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
+    .grid-card{display:block;border:1px solid #d1d5db;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s}
     .grid-card:hover{box-shadow:0 3px 6px rgba(0,0,0,.12);transform:translateY(-2px)}
 
-    /* ===== 썸네일 =====
-       - 모바일: 사진 기준처럼 꽉 채우는 cover
-       - 데스크탑: 원래 느낌(사진처럼 height:auto) 유지 + 과도한 세로 확장만 max-height로 캡!
-    */
-    .thumb{width:100%;display:block}
-    /* 모바일(사진 썸네일 느낌 유지) */
-    .thumb{height:180px;object-fit:cover}
-    @media (max-width:640px){ .thumb{height:140px} }
-    /* 데스크탑(원래 코드 느낌 복원) */
-    @media (min-width:769px){
-      .thumb{
-        height:auto;          /* 사진처럼 자연 비율 */
-        object-fit:contain;   /* 혹시 높이 지정될 때 대비 */
-        max-height:300px;     /* GIF 세로 과확대 방지 '클램프' */
-        margin:0 auto;        /* 캡에 걸려 폭이 줄면 가운데 정렬 */
-      }
+    /* ===== 썸네일: 윗줄 사진 기준으로 전 카드 통일 ===== */
+    .thumb{
+      width:100%;
+      height:220px;       /* 데스크탑 기준 고정 높이 */
+      object-fit:cover;   /* 어떤 비율이든 꽉 채우기 (필요시 일부 크롭) */
+      display:block;
+    }
+    @media (max-width:640px){
+      .thumb{height:150px;} /* 모바일은 조금 낮게 */
     }
 
     /* 프로젝트 섹션 */
@@ -134,7 +127,7 @@
       .hamburger{display:none}
     }
 
-    /* 요청: WORK 글자/링크 노출 제거 */
+    /* 요청: WORK 글자/링크 노출 제거(원하면 유지 가능) */
     .sidebar nav a[data-nav="work"] { display: none !important; }
     #work .section-title { display: none !important; }
   </style>
