@@ -25,219 +25,413 @@
   <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
         href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"/>
 
-  <!-- Tailwind (optional but present) -->
+  <!-- Tailwind (optional) -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
   <style>
-    :root{ --card-radius: 12px; --card-aspect: 16/9; }
     html{scroll-behavior:smooth}
     body{
-      font-family: "Noto Sans KR","Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-      color:#0f172a; background:#fafafa; margin:0;
+      font-family:"Noto Sans KR","Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:#111;margin:0;background:#fafafa;
     }
 
-    /* ===== Topbar (간단) ===== */
-    .topbar{position:sticky;top:0;z-index:50;height:56px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid #e5e7eb;background:rgba(255,255,255,.7);backdrop-filter:blur(10px)}
-    .brand{font-weight:900}
+    /* ===== Top Glass Bar ===== */
+    .topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(255,255,255,0.65);backdrop-filter:blur(10px);border-bottom:1px solid #e5e7eb;z-index:70;display:flex;align-items:center;gap:12px;padding:0 12px}
+    .topbar .left,.topbar .center,.topbar .right{display:flex;align-items:center}
+    .topbar .left{min-width:84px}
+    .topbar .center{flex:1;justify-content:center}
+    .topbar .right{min-width:84px;justify-content:flex-end}
+    .brand{font-weight:800}
+    .topbar img.logo{height:30px;width:auto;display:block}
+    .hamburger{cursor:pointer;width:26px;height:18px;display:flex;flex-direction:column;justify-content:space-between}
+    .hamburger span{display:block;height:3px;background:#111;border-radius:2px}
 
-    /* ===== Page container ===== */
-    .wrap{max-width:1200px;margin:0 auto;padding:24px 20px}
+    /* ===== Layout ===== */
+    .layout{display:flex;min-height:100vh;background:#fafafa;padding-top:56px}
+    .sidebar{width:240px;min-height:calc(100vh - 56px);position:fixed;top:56px;left:0;background:#fff;border-right:1px solid #e5e7eb;padding:1.5rem;overflow-y:auto;text-align:center;z-index:50}
 
-    /* ===== Grid ===== */
-    .grid{
-      display:grid; gap:22px;
-      grid-template-columns: 1fr;
+    /* --- 사이드바 프로필 --- */
+    .profile{display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .profile-photo{display:inline-block;transition:transform .25s ease}
+    .profile-photo:hover img{transform:scale(1.05)}
+    .profile-name{display:inline-block;transition:color .25s ease}
+    .profile-name:hover{color:#a2cffe;cursor:pointer}
+    .sidebar img{border-radius:8px;width:90px;height:90px;object-fit:contain;margin:0 auto 10px;transition:transform .25s ease}
+    .sidebar h1{font-weight:800;font-size:1.2rem;margin:0 0 .5rem 0;line-height:1;}
+    .sidebar p{color:#555;margin-bottom:.8rem;font-size:.85rem;line-height:1.4}
+
+    /* --- 소셜 아이콘 --- */
+    .social-icons {display:flex;justify-content:center;gap:12px;margin:8px 0 16px;}
+    .social-icons img {width:26px;height:26px;object-fit:contain;display:block;}
+
+    .sidebar nav a{display:block;font-size:.9rem;color:#222;margin:.35rem 0;padding:.15rem 0;transition:color .2s}
+    .sidebar nav a:hover{color:#000;text-decoration:underline}
+
+    .content{margin-left:240px;flex:1;padding:2rem 6rem;padding-top:32px}
+
+    /* ===== 카드 그리드 ===== */
+    .grid{display:grid;gap:2rem}
+    @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+    .grid-card{
+      display:block;border:1px solid #d1d5db;background:#fff;border-radius:10px;overflow:hidden;
+      box-shadow:0 1px 2px rgba(0,0,0,.05);transition:box-shadow .2s,transform .15s
     }
-    @media (min-width:640px){ .grid{grid-template-columns: repeat(2,1fr);} }
-    @media (min-width:1024px){ .grid{grid-template-columns: repeat(3,1fr);} }
+    .grid-card:hover{box-shadow:0 3px 6px rgba(0,0,0,.12);transform:translateY(-2px)}
 
-    /* ===== Card (g-ryun 스타일: 비율 고정 + 제목 아래) ===== */
-    .card{
-      border:1px solid #e5e7eb; border-radius: var(--card-radius);
-      background:#fff; overflow:hidden;
-      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
-    }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); border-color:#d8dee6; }
-
+    /* ====== 썸네일: 비율 고정 + 제목은 아래 ====== */
     .thumb-wrap{
-      aspect-ratio: var(--card-aspect);      /* ✅ 비율 고정 */
-      width:100%; overflow:hidden;
-      background:#f3f4f6;
+      aspect-ratio:16/9;     /* ✅ g-ryun처럼 비율 고정 */
+      width:100%; overflow:hidden; background:#f3f4f6;
     }
     .thumb{
-      width:100%; height:100%; display:block;
-      object-fit:cover;                       /* ✅ 꽉 채우기 (크롭 허용) */
+      width:100%; height:100%; display:block; object-fit:cover; /* 꽉 채우기(크롭 허용) */
+    }
+    .card-title{
+      padding:10px 12px 12px;
+      font-weight:700; font-size:.96rem; line-height:1.25; color:#0f172a;
+      text-align:left;
     }
 
-    .title{
-      padding:12px 14px 14px;
-      font-weight:700; font-size:0.98rem; line-height:1.25;
-      color:#0f172a;
+    /* ===== 상세 이미지 ===== */
+    [data-project]{display:none}
+    h2.section-title{font-size:1.4rem;font-weight:800;margin-bottom:1rem}
+    .fade-img{opacity:0;transition:opacity .4s}
+    .fade-img.loaded{opacity:1}
+    .project-img{width:100%;height:auto;object-fit:contain;border-radius:6px;margin-bottom:1rem}
+
+    .back-btn{display:inline-block;margin-bottom:1rem;padding:.4rem .8rem;font-size:.85rem;border:1px solid #d1d5db;border-radius:4px;background:#fff;cursor:pointer;transition:background .2s}
+    .back-btn:hover{background:#f3f4f6}
+
+    /* ===== Mobile ===== */
+    .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);z-index:65;padding:1.5rem;overflow-y:auto}
+    .mobile-menu a{display:block;padding:.7rem 0;color:#222;font-weight:700;text-align:center}
+
+    .mm-inner{max-width:520px;margin:0 auto}
+    .mm-profile{display:flex;flex-direction:column;align-items:center;margin-bottom:1rem}
+    .mm-avatar{width:80px;height:80px;border-radius:8px;object-fit:contain;margin-bottom:.5rem}
+    .mm-name{font-weight:800;font-size:1.1rem}
+    .mh-role{font-size:.85rem;color:#555}
+    .mm-social{display:flex;justify-content:center;gap:14px;margin:1rem 0}
+    .mm-social img{width:28px;height:28px;display:block}
+
+    /* 모바일 메인 히어로 */
+    .mobile-hero{display:none;margin:0 auto 1rem;max-width:560px;text-align:center}
+    .mh-avatar{width:72px;height:72px;border-radius:8px;object-fit:contain;margin:0 auto 8px}
+    .mh-name{font-weight:800}
+    .mh-role{font-size:.9rem;color:#555;margin-top:2px}
+    .mh-email{font-size:.85rem;color:#333;margin-top:2px}
+    .mh-social{display:flex;justify-content:center;gap:14px;margin-top:10px}
+    .mh-social img{width:24px;height:24px;display:block}
+
+    @media(max-width:768px){
+      .sidebar{display:none}
+      .content{margin-left:0;padding:1.25rem;padding-top:76px}
+      .brand{font-size:1rem}
+      .hamburger{display:flex}
+      .mobile-hero{display:block}
+    }
+    @media(min-width:769px){
+      .hamburger{display:none}
     }
 
-    /* ===== Detail (프로젝트 페이지) ===== */
-    .hidden{display:none}
-    .project{
-      max-width:980px;margin:28px auto 0;padding:0 8px;
-    }
-    .back{
-      display:inline-block;margin:0 0 14px;padding:.42rem .8rem;
-      border:1px solid #e5e7eb;border-radius:8px;background:#fff;cursor:pointer
-    }
-    .p-title{font-size:1.35rem;font-weight:900;margin:0 0 10px}
-    .p-img{width:100%;height:auto;border-radius:10px;display:block;margin:0 0 14px}
+    /* 요청: WORK 글자/링크 노출 제거(원하면 주석 처리) */
+    .sidebar nav a[data-nav="work"] { display: none !important; }
+    #work .section-title { display: none !important; }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">@poit4poit</div>
-  </header>
-
-  <main class="wrap" id="app">
-    <!-- ===== GRID (카드: 비율 고정, 제목은 이미지 아래) ===== -->
-    <section id="work" aria-label="Work">
-      <div class="grid">
-        <!-- MIYU -->
-        <article class="card">
-          <a href="#miyu" data-open="miyu" aria-label="Open MIYU">
-            <div class="thumb-wrap">
-              <img class="thumb" src="/Image_Miyu/Miyu3_KimChaeYeon.png" alt="MIYU thumbnail" loading="lazy">
-            </div>
-            <div class="title">MIYU</div>
-          </a>
-        </article>
-
-        <!-- Wriothesley -->
-        <article class="card">
-          <a href="#Wriothesley" data-open="Wriothesley" aria-label="Open Wriothesley">
-            <div class="thumb-wrap">
-              <img class="thumb" src="/Image_Wriothesley/Wriothesley3_KimChaeYeon.png" alt="Wriothesley thumbnail" loading="lazy">
-            </div>
-            <div class="title">Wriothesley</div>
-          </a>
-        </article>
-
-        <!-- Diving Deeper -->
-        <article class="card">
-          <a href="#diving" data-open="diving" aria-label="Open Diving Deeper">
-            <div class="thumb-wrap">
-              <img class="thumb" src="/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg" alt="Diving Deeper thumbnail" loading="lazy">
-            </div>
-            <div class="title">Diving Deeper</div>
-          </a>
-        </article>
-
-        <!-- Wave To Anchor (GIF) -->
-        <article class="card">
-          <a href="#WTA" data-open="WTA" aria-label="Open Wave To Anchor">
-            <div class="thumb-wrap">
-              <img class="thumb" src="/Main.gif" alt="Wave To Anchor thumbnail" loading="lazy">
-            </div>
-            <div class="title">Wave To Anchor</div>
-          </a>
-        </article>
-
-        <!-- Axe -->
-        <article class="card">
-          <a href="#Axe" data-open="Axe" aria-label="Open Axe">
-            <div class="thumb-wrap">
-              <img class="thumb" src="/Image_Axe/Axe_KimChaeYeon.jpg" alt="Axe thumbnail" loading="lazy">
-            </div>
-            <div class="title">Axe</div>
-          </a>
-        </article>
+  <!-- Top Glass Bar -->
+  <div class="topbar">
+    <div class="left"><a class="brand" href="#work" data-nav="work">@poit4poit</a></div>
+    <div class="center">
+      <a href="#work" data-nav="work">
+        <img class="logo" src="/Image/test.png" alt="Logo"/>
+      </a>
+    </div>
+    <div class="right">
+      <div class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+        <span></span><span></span><span></span>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- ===== PROJECT VIEWS (라우팅 일치) ===== -->
-    <section id="miyu" class="project hidden" data-project>
-      <button class="back" data-back>← Back</button>
-      <h2 class="p-title">MIYU</h2>
-      <img class="p-img" src="/Image_Miyu/Miyu3_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Miyu/Miyu2_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Miyu/Miyu4.png" alt="">
-      <img class="p-img" src="/Image_Miyu/Miyu_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Miyu/MiyuWire_A_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Miyu/MiyuWire_P_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Miyu/MiyuWire_Face_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Miyu/Miyu_Maps_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Miyu/Miyu_Unity_KimChaeYeon.png" alt="">
-    </section>
+  <!-- ✅ 모바일 메뉴 -->
+  <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="mm-inner">
+      <!-- 프로필 -->
+      <div class="mm-profile">
+        <img class="mm-avatar" src="/Image/download20250903083827.png" alt="Profile photo">
+        <div class="mm-name">poit4poit</div>
+        <div class="mh-role">3D Artist</div>
+        <div class="mh-email">coraline0120@gmail.com</div>
+      </div>
 
-    <section id="Wriothesley" class="project hidden" data-project>
-      <button class="back" data-back>← Back</button>
-      <h2 class="p-title">Wriothesley</h2>
-      <img class="p-img" src="/Image_Wriothesley/Wriothesley3_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Wriothesley/Wriothesley2_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Wriothesley/Wriothesley_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Wriothesley/WriothesleyWire_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Wriothesley/Wriothesley_Maps_KimChaeYeon.png" alt="">
-      <img class="p-img" src="/Image_Wriothesley/Wriothesley_Unity_KimChaeYeon.png" alt="">
-    </section>
+      <!-- 소셜 -->
+      <div class="mm-social" aria-label="Social links">
+        <a href="https://www.instagram.com/poit4poit" target="_blank" aria-label="Instagram">
+          <img src="/logo/Logo (1).png" alt="Instagram">
+        </a>
+        <a href="https://x.com/poit4poit" target="_blank" aria-label="X">
+          <img src="/logo/Logo (2).png" alt="X">
+        </a>
+        <a href="https://www.artstation.com/poit4poit" target="_blank" aria-label="ArtStation">
+          <img src="/logo/Logo (4).png" alt="ArtStation">
+        </a>
+      </div>
 
-    <section id="diving" class="project hidden" data-project>
-      <button class="back" data-back>← Back</button>
-      <h2 class="p-title">Diving Deeper</h2>
-      <img class="p-img" src="/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg" alt="">
-      <img class="p-img" src="/Image_DivingDeeper/Divingdeeper2_KimChaeYeon.jpg" alt="">
-      <img class="p-img" src="/Image_DivingDeeper/Divingdeeper3_KimChaeYeon.jpg" alt="">
-      <img class="p-img" src="/Image_DivingDeeper/Divingdeeper_Wire_KimChaeYeon.jpg" alt="">
-      <img class="p-img" src="/Image_DivingDeeper/Divingdeeper_ZBrush_KimChaeYeon.jpg" alt="">
-      <img class="p-img" src="/Image_DivingDeeper/Divingdeeper_pre_KimChaeYeon.jpg" alt="">
-    </section>
+      <!-- 내비 -->
+      <nav class="mm-nav">
+        <a href="#work" data-nav="work">WORK</a>
+        <a href="#miyu" data-nav="miyu">MIYU</a>
+        <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
+        <a href="#diving" data-nav="diving">Diving Deeper</a>
+        <a href="#WTA" data-nav="WTA">Wave To Anchor</a>
+        <a href="#Axe" data-nav="Axe">Axe</a>
+      </nav>
+    </div>
+  </div>
 
-    <section id="WTA" class="project hidden" data-project>
-      <button class="back" data-back>← Back</button>
-      <h2 class="p-title">Wave To Anchor</h2>
-      <img class="p-img" src="/Main.gif" alt="">
-    </section>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile">
+        <a href="#work" data-nav="work" class="profile-photo">
+          <img src="/Image/download20250903083827.png" alt="Profile photo" />
+        </a>
+        <a href="#work" data-nav="work" class="profile-name">
+          <h1>poit4poit</h1>
+        </a>
+        <p>3D Artist<br/>coraline0120@gmail.com</p>
+      </div>
 
-    <section id="Axe" class="project hidden" data-project>
-      <button class="back" data-back>← Back</button>
-      <h2 class="p-title">Axe</h2>
-      <img class="p-img" src="/Image_Axe/Axe_KimChaeYeon.gif" alt="">
-      <img class="p-img" src="/Image_Axe/Axe_KimChaeYeon.jpg" alt="">
-    </section>
-  </main>
+      <!-- 소셜 아이콘 -->
+      <div class="social-icons" aria-label="Social links">
+        <a href="https://www.instagram.com/poit4poit" target="_blank"><img src="/logo/Logo (1).png" alt="Instagram" /></a>
+        <a href="https://x.com/poit4poit" target="_blank"><img src="/logo/Logo (2).png" alt="X" /></a>
+        <a href="https://www.artstation.com/poit4poit" target="_blank"><img src="/logo/Logo (4).png" alt="ArtStation" /></a>
+      </div>
+
+      <nav>
+        <a href="#miyu" data-nav="miyu">MIYU</a>
+        <a href="#Wriothesley" data-nav="Wriothesley">Wriothesley</a>
+        <a href="#diving" data-nav="diving">Diving Deeper</a>
+        <a href="#WTA" data-nav="WTA">WTA</a>
+        <a href="#Axe" data-nav="Axe">Axe</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <!-- ✅ 모바일 메인 히어로 -->
+      <section class="mobile-hero" aria-label="Profile">
+        <img class="mh-avatar" src="/Image/download20250903083827.png" alt="Profile photo">
+        <div class="mh-name">poit4poit</div>
+        <div class="mh-role">3D Artist</div>
+        <div class="mh-email">coraline0120@gmail.com</div>
+        <div class="mh-social" aria-label="Social links">
+          <a href="https://www.instagram.com/poit4poit" target="_blank"><img src="/logo/Logo (1).png" alt="Instagram"></a>
+          <a href="https://x.com/poit4poit" target="_blank"><img src="/logo/Logo (2).png" alt="X"></a>
+          <a href="https://www.artstation.com/poit4poit" target="_blank"><img src="/logo/Logo (4).png" alt="ArtStation"></a>
+        </div>
+      </section>
+
+      <!-- Work grid (제목은 이미지 아래) -->
+      <section id="work">
+        <h2 class="section-title">WORK</h2>
+        <div class="grid">
+          <button class="grid-card" data-open="miyu" aria-label="Open MIYU">
+            <div class="thumb-wrap">
+              <img class="thumb" src="/Image_Miyu/Miyu3_KimChaeYeon.png" alt="MIYU thumbnail" loading="lazy" />
+            </div>
+            <div class="card-title">MIYU</div>
+          </button>
+
+          <button class="grid-card" data-open="Wriothesley" aria-label="Open Wriothesley">
+            <div class="thumb-wrap">
+              <img class="thumb" src="/Image_Wriothesley/Wriothesley3_KimChaeYeon.png" alt="Wriothesley thumbnail" loading="lazy" />
+            </div>
+            <div class="card-title">Wriothesley</div>
+          </button>
+
+          <button class="grid-card" data-open="diving" aria-label="Open Diving Deeper">
+            <div class="thumb-wrap">
+              <img class="thumb" src="/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg" alt="Diving Deeper thumbnail" loading="lazy" />
+            </div>
+            <div class="card-title">Diving Deeper</div>
+          </button>
+
+          <button class="grid-card" data-open="WTA" aria-label="Open Wave To Anchor">
+            <div class="thumb-wrap">
+              <img class="thumb" src="/Main.gif" alt="Wave To Anchor thumbnail" loading="lazy" />
+            </div>
+            <div class="card-title">Wave To Anchor</div>
+          </button>
+
+          <button class="grid-card" data-open="Axe" aria-label="Open Axe">
+            <div class="thumb-wrap">
+              <img class="thumb" src="/Image_Axe/Axe_KimChaeYeon.jpg" alt="Axe thumbnail" loading="lazy" />
+            </div>
+            <div class="card-title">Axe</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Project MIYU -->
+      <section id="miyu" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">MIYU</h2>
+        <img class="project-img fade-img" src="/Image_Miyu/Miyu3_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/Miyu2_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/Miyu4.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/Miyu_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/MiyuWire_A_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/MiyuWire_P_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/MiyuWire_Face_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/Miyu_Maps_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Miyu/Miyu_Unity_KimChaeYeon.png" alt="">
+      </section>
+
+      <!-- Project Wriothesley -->
+      <section id="Wriothesley" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">Wriothesley</h2>
+        <img class="project-img fade-img" src="/Image_Wriothesley/Wriothesley3_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Wriothesley/Wriothesley2_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Wriothesley/Wriothesley_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Wriothesley/WriothesleyWire_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Wriothesley/Wriothesley_Maps_KimChaeYeon.png" alt="">
+        <img class="project-img fade-img" src="/Image_Wriothesley/Wriothesley_Unity_KimChaeYeon.png" alt="">
+      </section>
+
+      <!-- Project Diving Deeper -->
+      <section id="diving" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">Diving Deeper</h2>
+        <img class="project-img fade-img" src="/Image_DivingDeeper/Divingdeeper_KimChaeYeon.jpg" alt="">
+        <img class="project-img fade-img" src="/Image_DivingDeeper/Divingdeeper2_KimChaeYeon.jpg" alt="">
+        <img class="project-img fade-img" src="/Image_DivingDeeper/Divingdeeper3_KimChaeYeon.jpg" alt="">
+        <img class="project-img fade-img" src="/Image_DivingDeeper/Divingdeeper_Wire_KimChaeYeon.jpg" alt="">
+        <img class="project-img fade-img" src="/Image_DivingDeeper/Divingdeeper_ZBrush_KimChaeYeon.jpg" alt="">
+        <img class="project-img fade-img" src="/Image_DivingDeeper/Divingdeeper_pre_KimChaeYeon.jpg" alt="">
+      </section>
+
+      <!-- Project Wave To Anchor -->
+      <section id="WTA" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">Wave To Anchor</h2>
+        <img class="project-img fade-img" src="/Main.gif" alt="">
+      </section>
+
+      <!-- Project Axe -->
+      <section id="Axe" class="mt-10" data-project>
+        <button class="back-btn" data-back>← Back to WORK</button>
+        <h2 class="section-title">Axe</h2>
+        <img class="project-img fade-img" src="/Image_Axe/Axe_KimChaeYeon.gif" alt="">
+        <img class="project-img fade-img" src="/Image_Axe/Axe_KimChaeYeon.jpg" alt="">
+      </section>
+    </main>
+  </div>
 
   <script>
-    // 간단 라우팅: work <-> project
-    const work = document.getElementById('work');
-    const projects = [...document.querySelectorAll('[data-project]')];
+    // 페이드인
+    document.querySelectorAll('img.fade-img').forEach(img=>{
+      if(img.complete) img.classList.add('loaded');
+      img.addEventListener('load', ()=> img.classList.add('loaded'));
+    });
 
-    function show(view){
-      if(!view || view==='work'){
-        work.classList.remove('hidden');
-        projects.forEach(p=>p.classList.add('hidden'));
+    // 섹션 DOM 캐시
+    const projects = document.querySelectorAll('[data-project]');
+    const work = document.getElementById('work');
+
+    // 화면 표시
+    function showView(view){
+      if(!view || view === 'work'){
+        projects.forEach(sec=>sec.style.display='none');
+        work.style.display='block';
       }else{
-        work.classList.add('hidden');
-        projects.forEach(p=>p.classList.toggle('hidden', p.id!==view));
+        work.style.display='none';
+        projects.forEach(sec=>sec.style.display='none');
+        const target = document.getElementById(view);
+        if(target){ target.style.display='block'; }
+        else { work.style.display='block'; }
       }
-      window.scrollTo({top:0, behavior:'smooth'});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function navTo(view,{replace=false}={}){
-      const hash = view && view!=='work' ? '#'+view : '#work';
-      if(replace){ history.replaceState({view},'',hash); }
-      else{ history.pushState({view},'',hash); }
-      show(view);
+    // URL/히스토리
+    function navigateTo(view, { replace=false } = {}){
+      const hash = view && view !== 'work' ? '#' + view : '#work';
+      if(replace){ history.replaceState({ view }, '', hash); }
+      else{ history.pushState({ view }, '', hash); }
+      showView(view);
     }
 
     // 초기 진입
-    navTo((location.hash||'#work').substring(1), {replace:true});
+    const initialView = (location.hash || '#work').replace('#','');
+    navigateTo(initialView, { replace:true });
 
-    // 카드/링크 클릭
-    document.addEventListener('click', (e)=>{
-      const open = e.target.closest('[data-open]');
-      const back = e.target.closest('[data-back]');
-      if(open){ e.preventDefault(); navTo(open.dataset.open); }
-      if(back){ e.preventDefault(); history.back(); }
+    // 뒤/앞 버튼
+    window.addEventListener('popstate', (e)=>{
+      const viewFromState = e.state?.view;
+      const viewFromHash = (location.hash || '#work').replace('#','');
+      showView(viewFromState ?? viewFromHash ?? 'work');
     });
 
-    // 브라우저 뒤/앞
-    window.addEventListener('popstate', (e)=>{
-      const view = e.state?.view || (location.hash||'#work').substring(1);
-      show(view);
+    // 전역 클릭
+    document.addEventListener('click', (e)=>{
+      const openBtn = e.target.closest('[data-open]');
+      const backBtn = e.target.closest('[data-back]');
+      const navLink = e.target.closest('[data-nav]');
+
+      if(openBtn){ const id = openBtn.dataset.open; if(id){ navigateTo(id); } return; }
+      if(backBtn){ history.back(); return; }
+      if(navLink){
+        e.preventDefault();
+        const id = navLink.dataset.nav;
+        navigateTo(id || 'work');
+        closeMobileMenu();
+        return;
+      }
+    });
+
+    // 모바일 메뉴
+    const hamburger=document.getElementById('hamburger');
+    const mobileMenu=document.getElementById('mobileMenu');
+
+    function openMobileMenu(){
+      if(!mobileMenu) return;
+      mobileMenu.style.display='block';
+      mobileMenu.setAttribute('aria-hidden','false');
+      if(hamburger) hamburger.setAttribute('aria-expanded','true');
+      document.body.style.overflow='hidden';
+    }
+    function closeMobileMenu(){
+      if(!mobileMenu) return;
+      mobileMenu.style.display='none';
+      mobileMenu.setAttribute('aria-hidden','true');
+      if(hamburger) hamburger.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    }
+
+    if(hamburger){
+      hamburger.addEventListener('click',()=>{
+        if(!mobileMenu) return;
+        const isOpen = mobileMenu.style.display==='block';
+        if(isOpen) closeMobileMenu(); else openMobileMenu();
+      });
+    }
+
+    // ESC 닫기
+    document.addEventListener('keydown',(e)=>{
+      if(e.key==='Escape') closeMobileMenu();
+    });
+
+    // 배경 클릭 닫기
+    mobileMenu?.addEventListener('click',(e)=>{
+      const inner = e.target.closest('.mm-inner');
+      if(!inner) closeMobileMenu();
     });
   </script>
 </body>
